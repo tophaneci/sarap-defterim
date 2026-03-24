@@ -156,6 +156,11 @@ textarea{resize:vertical;min-height:80px;line-height:1.6}
 @keyframes bye{to{opacity:0;transform:scaleY(.85)}}
 
 .cloud-card{background:var(--surf);border:1px solid var(--bord);padding:18px 20px;margin:0 0 22px;border-radius:2px}
+.cloud-mini{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.cloud-userline{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin-top:10px}
+.cloud-usertext{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);text-align:right}
+.cloud-mini-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+body.logged-in .cloud-card{display:none}
 .cloud-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
 .cloud-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;color:var(--wht);font-style:italic}
 .cloud-sub{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-top:4px}
@@ -217,10 +222,21 @@ body.logged-in #cloud-settings-wrap{display:none}
       <h1>Şarap <em>Defterim</em></h1>
       <p>Kişisel Şarap Arşivi</p>
     </div>
-    <div class="stats">
-      <div class="stat"><div class="stn" id="st-n">0</div><div class="stl">Şarap</div></div>
-      <div class="stat"><div class="stn" id="st-a">—</div><div class="stl">Ort.</div></div>
-      <div class="stat"><div class="stn" id="st-b">—</div><div class="stl">En İyi</div></div>
+    <div class="cloud-mini">
+      <div class="stats">
+        <div class="stat"><div class="stn" id="st-n">0</div><div class="stl">Şarap</div></div>
+        <div class="stat"><div class="stn" id="st-a">—</div><div class="stl">Ort.</div></div>
+        <div class="stat"><div class="stn" id="st-b">—</div><div class="stl">En İyi</div></div>
+      </div>
+      <div class="cloud-userline">
+        <span class="cloud-badge" id="cloud-mode-badge">Yerel</span>
+        <span class="cloud-badge" id="cloud-auth-badge">Çıkış yapıldı</span>
+        <span class="cloud-usertext" id="cloud-status">Yerel mod · sadece bu cihazda kayıtlı</span>
+      </div>
+      <div class="cloud-mini-actions" id="post-login-actions-mini" style="display:none">
+        <button class="fbtn" id="sync-btn-mini" type="button">Şimdi Senkronize Et</button>
+        <button class="fbtn" id="logout-btn-mini" type="button">Çıkış Yap</button>
+      </div>
     </div>
   </div>
 </header>
@@ -238,10 +254,7 @@ body.logged-in #cloud-settings-wrap{display:none}
       <div class="cloud-title">Bulut Senkronizasyonu</div>
       <div class="cloud-sub" id="cloud-status">Yerel mod · sadece bu cihazda kayıtlı</div>
     </div>
-    <div class="cloud-badges">
-      <span class="cloud-badge" id="cloud-mode-badge">Yerel</span>
-      <span class="cloud-badge" id="cloud-auth-badge">Çıkış yapıldı</span>
-    </div>
+
   </div>
 
   <details class="cloud-details" id="cloud-settings-wrap">
@@ -269,7 +282,7 @@ body.logged-in #cloud-settings-wrap{display:none}
     </div>
     <div class="fg">
       <div class="lbl">Şifre</div>
-      <input type="text" id="auth-password" placeholder="Supabase Auth şifren">
+      <input type="password" id="auth-password" placeholder="Supabase Auth şifren">
     </div>
   </div>
 
@@ -290,7 +303,7 @@ body.logged-in #cloud-settings-wrap{display:none}
     <div class="dash-card"><div class="dash-kpi" id="d-avg">—</div><div class="dash-lbl">Ortalama Puan</div></div>
     <div class="dash-card"><div class="dash-kpi" id="d-best">—</div><div class="dash-lbl">En İyi Puan</div></div>
   </div>
-  <div class="dash-grid" style="grid-template-columns:1.2fr .8fr">
+  <div class="dash-grid" style="grid-template-columns:1.2fr .8fr .8fr">
     <div class="dash-card">
       <div class="dash-title">Son Eklenenler</div>
       <div class="dash-list" id="dash-recent"></div>
@@ -298,6 +311,10 @@ body.logged-in #cloud-settings-wrap{display:none}
     <div class="dash-card">
       <div class="dash-title">Tür Dağılımı</div>
       <div class="dash-list" id="dash-types"></div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-title">Ülke Dağılımı</div>
+      <div class="dash-list" id="dash-countries"></div>
     </div>
   </div>
 </div>
@@ -884,17 +901,26 @@ function renderDashboard() {
     }).join('');
   }
 
-  var typeCounts = {};
-  wines.forEach(function(w){ typeCounts[w.type || 'Belirsiz'] = (typeCounts[w.type || 'Belirsiz'] || 0) + 1; });
-  var typeEntries = Object.keys(typeCounts).sort(function(a,b){ return typeCounts[b] - typeCounts[a]; });
-  var typesEl = document.getElementById('dash-types');
-  if (!typeEntries.length) {
-    typesEl.innerHTML = '<div class="dash-empty">Henüz kayıt yok.</div>';
-  } else {
-    typesEl.innerHTML = typeEntries.map(function(type){
-      return '<div class="dash-item"><div><div class="dash-name">' + type + '</div></div><div class="dash-val">' + typeCounts[type] + '</div></div>';
+  function renderCountList(elId, counts) {
+    var el = document.getElementById(elId);
+    var entries = Object.keys(counts).sort(function(a,b){ return counts[b] - counts[a]; });
+    if (!entries.length) {
+      el.innerHTML = '<div class="dash-empty">Henüz kayıt yok.</div>';
+      return;
+    }
+    el.innerHTML = entries.map(function(key){
+      return '<div class="dash-item"><div><div class="dash-name">' + key + '</div></div><div class="dash-val">' + counts[key] + '</div></div>';
     }).join('');
   }
+
+  var typeCounts = {};
+  var countryCounts = {};
+  wines.forEach(function(w){
+    typeCounts[w.type || 'Belirsiz'] = (typeCounts[w.type || 'Belirsiz'] || 0) + 1;
+    countryCounts[w.country || 'Belirsiz'] = (countryCounts[w.country || 'Belirsiz'] || 0) + 1;
+  });
+  renderCountList('dash-types', typeCounts);
+  renderCountList('dash-countries', countryCounts);
 }
 
 document.getElementById('mclose').addEventListener('click', closeModal);
@@ -984,23 +1010,27 @@ function updateCloudUi(msg) {
   var status = document.getElementById('cloud-status');
   var modeBadge = document.getElementById('cloud-mode-badge');
   var authBadge = document.getElementById('cloud-auth-badge');
+  var miniActions = document.getElementById('post-login-actions-mini');
 
   if (isCloudReady()) {
     document.body.classList.add('logged-in');
     var settingsWrap = document.getElementById('cloud-settings-wrap'); if (settingsWrap) settingsWrap.open = false;
-    status.textContent = msg || ('Bulut bağlı · ' + currentUser.email);
+    status.textContent = msg || currentUser.email;
     modeBadge.textContent = 'Bulut';
     authBadge.textContent = 'Giriş yapıldı';
+    if (miniActions) miniActions.style.display = 'flex';
   } else if (sb) {
     document.body.classList.remove('logged-in');
     status.textContent = msg || 'Supabase hazır · giriş bekleniyor';
     modeBadge.textContent = 'Hazır';
     authBadge.textContent = 'Çıkış yapıldı';
+    if (miniActions) miniActions.style.display = 'none';
   } else {
     document.body.classList.remove('logged-in');
     status.textContent = msg || 'Yerel mod · sadece bu cihazda kayıtlı';
     modeBadge.textContent = 'Yerel';
     authBadge.textContent = 'Çıkış yapıldı';
+    if (miniActions) miniActions.style.display = 'none';
   }
 }
 
@@ -1041,6 +1071,38 @@ async function saveSupabaseSettings() {
   showToast('Supabase ayarları kaydedildi', 'ok');
 }
 
+function stripUnsupportedFields(obj, fields) {
+  var clone = {};
+  Object.keys(obj).forEach(function(k) {
+    if (fields.indexOf(k) === -1) clone[k] = obj[k];
+  });
+  return clone;
+}
+
+async function upsertWinePayload(payload) {
+  var attempts = [
+    payload,
+    stripUnsupportedFields(payload, ['source_place']),
+    stripUnsupportedFields(payload, ['source_place', 'tasted_at']),
+    stripUnsupportedFields(payload, ['source_place', 'tasted_at', 'image']),
+    stripUnsupportedFields(payload, ['source_place', 'tasted_at', 'image', 'ratings'])
+  ];
+  var lastResult = null;
+  for (var i = 0; i < attempts.length; i++) {
+    lastResult = await sb.from('wines').upsert(attempts[i], { onConflict: 'app_id' });
+    if (!lastResult.error) return lastResult;
+  }
+  return lastResult;
+}
+
+async function bulkUpsertWinePayloads(payloads) {
+  for (var i = 0; i < payloads.length; i++) {
+    var result = await upsertWinePayload(payloads[i]);
+    if (result.error) return result;
+  }
+  return { error: null };
+}
+
 function cloudRowFromWine(wine) {
   var n = normalizeWine(wine);
   return {
@@ -1066,11 +1128,11 @@ function cloudRowFromWine(wine) {
 async function saveWineToCloud(wine) {
   if (!isCloudReady()) return;
   var payload = cloudRowFromWine(wine);
-  var result = await sb.from('wines').upsert(payload, { onConflict: 'app_id' });
+  var result = await upsertWinePayload(payload);
   if (result.error) {
     console.error(result.error);
     updateCloudUi('Bulut bağlı · son kayıt yüklenemedi');
-    showToast('Buluta kayıt giderken hata oldu', '');
+    showToast('Buluta kayıt giderken hata oldu: ' + (result.error.message || 'bilinmeyen hata'), '');
     return;
   }
   updateCloudUi('Bulut bağlı · kayıt eşitlendi');
@@ -1137,10 +1199,10 @@ async function syncAllToCloud(showOkToast) {
     return;
   }
   var payload = wines.map(cloudRowFromWine);
-  var result = await sb.from('wines').upsert(payload, { onConflict: 'app_id' });
+  var result = await upsertWinePayload(payload);
   if (result.error) {
     console.error(result.error);
-    showToast('Toplu senkronizasyon başarısız', '');
+    showToast('Toplu senkronizasyon başarısız: ' + (result.error && result.error.message ? result.error.message : 'bilinmeyen hata'), '');
     return;
   }
   updateCloudUi('Bulut bağlı · tüm kayıtlar eşitlendi');
