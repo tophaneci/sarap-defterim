@@ -1128,7 +1128,7 @@ function cloudRowFromWine(wine) {
 async function saveWineToCloud(wine) {
   if (!isCloudReady()) return;
   var payload = cloudRowFromWine(wine);
-  var result = await upsertWinePayload(payload);
+  var result = await bulkUpsertWinePayloads(payload);
   if (result.error) {
     console.error(result.error);
     updateCloudUi('Bulut bağlı · son kayıt yüklenemedi');
