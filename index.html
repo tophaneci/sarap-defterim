@@ -281,13 +281,12 @@ body.logged-in #cloud-settings-wrap{display:none}
   </div>
 
   <div class="cloud-actions" id="login-actions">
-    <button class="save-btn" id="login-btn" type="button" style="margin-top:0">Buluta Bağlan</button>
+    <button class="save-btn" id="login-btn" type="button" style="margin-top:0">Giriş Yap</button>
   </div>
   <div class="cloud-actions" id="post-login-actions">
     <button class="fbtn secondary-sync" id="sync-btn" type="button">Manuel Eşitle</button>
     <button class="fbtn" id="logout-btn" type="button">Çıkış Yap</button>
   </div>
-  <div class="cloud-note" id="cloud-note-auth">Senkronizasyon artık otomatik çalışır. “Manuel Eşitle” sadece yedek kontroldür.</div>
 </div>
 
 
@@ -1210,7 +1209,7 @@ async function loginToCloud() {
   updateCloudUi('Bulut bağlı · giriş yapıldı');
   await syncAllToCloud(false);
   await loadCloudWines();
-  showToast('Buluta bağlandın', 'ok');
+  showToast('Giriş Yaptın', 'ok');
 }
 
 async function logoutFromCloud() {
