@@ -149,6 +149,19 @@ textarea{resize:vertical;min-height:80px;line-height:1.6}
 .m-sec-val{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--txt);line-height:1.65;font-style:italic}
 .m-del{background:none;border:1px solid var(--bord);color:var(--mut);font-family:'Josefin Sans',sans-serif;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;padding:9px;cursor:pointer;border-radius:1px;width:100%;margin-top:6px;transition:all .2s;-webkit-tap-highlight-color:transparent}
 .m-del:active{border-color:var(--wineh);color:var(--wineh)}
+
+.secondary-sync{opacity:.75}
+.secondary-sync:hover{opacity:1}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active{
+  -webkit-text-fill-color: var(--txt);
+  -webkit-box-shadow: 0 0 0 1000px var(--bg) inset;
+  box-shadow: 0 0 0 1000px var(--bg) inset;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--surf2);border:1px solid var(--wineh);color:var(--wht);font-size:.72rem;letter-spacing:.1em;padding:10px 20px;border-radius:2px;z-index:999;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.ok{border-color:var(--greenl);background:#0d2419}
@@ -231,10 +244,10 @@ body.logged-in #cloud-settings-wrap{display:none}
       <div class="cloud-userline">
         <span class="cloud-badge" id="cloud-mode-badge">Yerel</span>
         <span class="cloud-badge" id="cloud-auth-badge">Çıkış yapıldı</span>
-        <span class="cloud-usertext" id="cloud-status">Yerel mod · sadece bu cihazda kayıtlı</span>
+        <span class="cloud-usertext" id="cloud-status-header">Yerel mod · sadece bu cihazda kayıtlı</span>
       </div>
       <div class="cloud-mini-actions" id="post-login-actions-mini" style="display:none">
-        <button class="fbtn" id="sync-btn-mini" type="button">Şimdi Senkronize Et</button>
+        <button class="fbtn" id="sync-btn-mini" type="button" class="fbtn secondary-sync">Manuel Eşitle</button>
         <button class="fbtn" id="logout-btn-mini" type="button">Çıkış Yap</button>
       </div>
     </div>
@@ -251,29 +264,10 @@ body.logged-in #cloud-settings-wrap{display:none}
 <div class="cloud-card">
   <div class="cloud-head">
     <div>
-      <div class="cloud-title">Bulut Senkronizasyonu</div>
-      <div class="cloud-sub" id="cloud-status">Yerel mod · sadece bu cihazda kayıtlı</div>
+      <div class="cloud-title">Bulut Durumu</div>
+      <div class="cloud-sub" id="cloud-status-main">Yerel mod · sadece bu cihazda kayıtlı</div>
     </div>
-
   </div>
-
-  <details class="cloud-details" id="cloud-settings-wrap">
-    <summary>Supabase ayarlarını aç</summary>
-    <div class="cloud-grid">
-      <div class="fg">
-        <div class="lbl">Project URL</div>
-        <input type="text" id="sb-url" placeholder="https://xxxxx.supabase.co">
-      </div>
-      <div class="fg">
-        <div class="lbl">Anon Key</div>
-        <input type="text" id="sb-key" placeholder="eyJhbGciOi...">
-      </div>
-    </div>
-    <div class="cloud-actions">
-      <button class="fbtn" id="save-sb" type="button">Ayarları Kaydet</button>
-      <button class="fbtn" id="test-sb" type="button">Bağlantıyı Test Et</button>
-    </div>
-  </details>
 
   <div class="cloud-grid" style="margin-top:14px" id="cloud-login-grid">
     <div class="fg">
@@ -290,10 +284,10 @@ body.logged-in #cloud-settings-wrap{display:none}
     <button class="save-btn" id="login-btn" type="button" style="margin-top:0">Buluta Bağlan</button>
   </div>
   <div class="cloud-actions" id="post-login-actions">
-    <button class="fbtn" id="sync-btn" type="button">Şimdi Senkronize Et</button>
+    <button class="fbtn secondary-sync" id="sync-btn" type="button">Manuel Eşitle</button>
     <button class="fbtn" id="logout-btn" type="button">Çıkış Yap</button>
   </div>
-  <div class="cloud-note" id="cloud-note-auth">Not: Fotoğraflar şimdilik küçük kişisel kullanım için veri tabanında metin olarak saklanır. Bu senaryoda yeterli; çok büyürse sonra Storage'a taşınır.</div>
+  <div class="cloud-note" id="cloud-note-auth">Senkronizasyon artık otomatik çalışır. “Manuel Eşitle” sadece yedek kontroldür.</div>
 </div>
 
 
@@ -469,7 +463,13 @@ var editingWineId = null;
 var bannerTimer = null;
 var toastTimer = null;
 
-var sbConfig = JSON.parse(localStorage.getItem('sd4_supabase') || '{"url":"","key":""}');
+var HARDCODED_SUPABASE_URL = 'BURAYA_SUPABASE_PROJECT_URL';
+var HARDCODED_SUPABASE_ANON_KEY = 'BURAYA_SUPABASE_ANON_KEY';
+
+var sbConfig = {
+  url: HARDCODED_SUPABASE_URL,
+  key: HARDCODED_SUPABASE_ANON_KEY
+};
 var sb = null;
 var currentUser = null;
 
@@ -981,11 +981,6 @@ function persist() {
   localStorage.setItem('sd4', JSON.stringify(wines.map(function(w){ return normalizeWine(w); })));
 }
 
-function loadSbInputs() {
-  document.getElementById('sb-url').value = sbConfig.url || '';
-  document.getElementById('sb-key').value = sbConfig.key || '';
-}
-
 function initSupabaseClient() {
   if (!sbConfig.url || !sbConfig.key || !window.supabase || !window.supabase.createClient) {
     sb = null;
@@ -1007,7 +1002,8 @@ function isCloudReady() {
 }
 
 function updateCloudUi(msg) {
-  var status = document.getElementById('cloud-status');
+  var status = document.getElementById('cloud-status-header');
+  var statusMain = document.getElementById('cloud-status-main');
   var modeBadge = document.getElementById('cloud-mode-badge');
   var authBadge = document.getElementById('cloud-auth-badge');
   var miniActions = document.getElementById('post-login-actions-mini');
@@ -1016,18 +1012,21 @@ function updateCloudUi(msg) {
     document.body.classList.add('logged-in');
     var settingsWrap = document.getElementById('cloud-settings-wrap'); if (settingsWrap) settingsWrap.open = false;
     status.textContent = msg || currentUser.email;
+    if (statusMain) statusMain.textContent = msg || currentUser.email;
     modeBadge.textContent = 'Bulut';
     authBadge.textContent = 'Giriş yapıldı';
     if (miniActions) miniActions.style.display = 'flex';
   } else if (sb) {
     document.body.classList.remove('logged-in');
-    status.textContent = msg || 'Supabase hazır · giriş bekleniyor';
+    status.textContent = msg || 'Bulut hazır · giriş bekleniyor';
+    if (statusMain) statusMain.textContent = msg || 'Bulut hazır · giriş bekleniyor';
     modeBadge.textContent = 'Hazır';
     authBadge.textContent = 'Çıkış yapıldı';
     if (miniActions) miniActions.style.display = 'none';
   } else {
     document.body.classList.remove('logged-in');
     status.textContent = msg || 'Yerel mod · sadece bu cihazda kayıtlı';
+    if (statusMain) statusMain.textContent = msg || 'Yerel mod · sadece bu cihazda kayıtlı';
     modeBadge.textContent = 'Yerel';
     authBadge.textContent = 'Çıkış yapıldı';
     if (miniActions) miniActions.style.display = 'none';
@@ -1035,40 +1034,14 @@ function updateCloudUi(msg) {
 }
 
 async function hydrateSession() {
-  if (!sb) { updateCloudUi(); return; }
+  if (!sb) { updateCloudUi('Bulut ayarları koda gömülü değil'); return; }
   var result = await sb.auth.getSession();
   currentUser = result && result.data && result.data.session ? result.data.session.user : null;
   updateCloudUi();
   if (currentUser) {
-    await syncAllToCloud(false);
     await loadCloudWines();
+    await syncAllToCloud(false);
   }
-}
-
-async function testSupabaseConnection() {
-  if (!sb && !initSupabaseClient()) {
-    showToast('Önce URL ve anon key gir', '');
-    return;
-  }
-  var result = await sb.auth.getSession();
-  if (result.error) {
-    updateCloudUi('Bağlantı hatası');
-    showToast('Bağlantı başarısız', '');
-    return;
-  }
-  updateCloudUi('Bağlantı tamam · şimdi giriş yapabilirsin');
-  showToast('Bağlantı tamam', 'ok');
-}
-
-async function saveSupabaseSettings() {
-  sbConfig = {
-    url: document.getElementById('sb-url').value.trim(),
-    key: document.getElementById('sb-key').value.trim()
-  };
-  localStorage.setItem('sd4_supabase', JSON.stringify(sbConfig));
-  initSupabaseClient();
-  await hydrateSession();
-  showToast('Supabase ayarları kaydedildi', 'ok');
 }
 
 function stripUnsupportedFields(obj, fields) {
@@ -1189,6 +1162,12 @@ async function loadCloudWines() {
   updateCloudUi('Bulut bağlı · kayıtlar yüklendi');
 }
 
+
+async function autoRefreshFromCloud() {
+  if (!isCloudReady()) return;
+  await loadCloudWines();
+}
+
 async function syncAllToCloud(showOkToast) {
   if (!isCloudReady()) {
     showToast('Önce giriş yap', '');
@@ -1211,7 +1190,7 @@ async function syncAllToCloud(showOkToast) {
 
 async function loginToCloud() {
   if (!sb && !initSupabaseClient()) {
-    showToast('Önce Supabase ayarlarını kaydet', '');
+    showToast('Supabase bilgileri koda sabitlenmemiş', '');
     return;
   }
   var email = document.getElementById('auth-email').value.trim();
@@ -1246,8 +1225,6 @@ async function logoutFromCloud() {
   setTimeout(function(){ window.location.reload(); }, 250);
 }
 
-document.getElementById('save-sb').addEventListener('click', saveSupabaseSettings);
-document.getElementById('test-sb').addEventListener('click', testSupabaseConnection);
 document.getElementById('login-btn').addEventListener('click', loginToCloud);
 document.getElementById('logout-btn').addEventListener('click', logoutFromCloud);
 document.getElementById('logout-btn-mini').addEventListener('click', logoutFromCloud);
@@ -1260,8 +1237,25 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-loadSbInputs();
 initSupabaseClient();
+
+if (sb && sb.auth && sb.auth.onAuthStateChange) {
+  sb.auth.onAuthStateChange(function(event, session) {
+    currentUser = session && session.user ? session.user : null;
+    updateCloudUi();
+    if (currentUser) {
+      loadCloudWines();
+    }
+  });
+}
+
+document.addEventListener('visibilitychange', function() {
+  if (!document.hidden) autoRefreshFromCloud();
+});
+setInterval(function() {
+  autoRefreshFromCloud();
+}, 60000);
+
 hydrateSession();
 updateStats();
 renderWines();
