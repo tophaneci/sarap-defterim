@@ -1128,7 +1128,7 @@ function cloudRowFromWine(wine) {
 async function saveWineToCloud(wine) {
   if (!isCloudReady()) return;
   var payload = cloudRowFromWine(wine);
-  var result = await bulkUpsertWinePayloads(payload);
+  var result = await upsertWinePayload(payload);
   if (result.error) {
     console.error(result.error);
     updateCloudUi('Bulut bağlı · son kayıt yüklenemedi');
@@ -1199,7 +1199,7 @@ async function syncAllToCloud(showOkToast) {
     return;
   }
   var payload = wines.map(cloudRowFromWine);
-  var result = await upsertWinePayload(payload);
+  var result = await bulkUpsertWinePayloads(payload);
   if (result.error) {
     console.error(result.error);
     showToast('Toplu senkronizasyon başarısız: ' + (result.error && result.error.message ? result.error.message : 'bilinmeyen hata'), '');
@@ -1236,17 +1236,23 @@ async function loginToCloud() {
 
 async function logoutFromCloud() {
   if (!sb) return;
-  await sb.auth.signOut();
+  var result = await sb.auth.signOut({ scope: 'local' });
+  if (result && result.error) {
+    console.error(result.error);
+  }
   currentUser = null;
   updateCloudUi('Yerel mod · çıkış yapıldı');
   showToast('Çıkış yapıldı', 'ok');
+  setTimeout(function(){ window.location.reload(); }, 250);
 }
 
 document.getElementById('save-sb').addEventListener('click', saveSupabaseSettings);
 document.getElementById('test-sb').addEventListener('click', testSupabaseConnection);
 document.getElementById('login-btn').addEventListener('click', loginToCloud);
 document.getElementById('logout-btn').addEventListener('click', logoutFromCloud);
+document.getElementById('logout-btn-mini').addEventListener('click', logoutFromCloud);
 document.getElementById('sync-btn').addEventListener('click', function(){ syncAllToCloud(true); });
+document.getElementById('sync-btn-mini').addEventListener('click', function(){ syncAllToCloud(true); });
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
