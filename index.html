@@ -264,8 +264,6 @@ body.logged-in #cloud-settings-wrap{display:none}
 <div class="cloud-card">
   <div class="cloud-head">
     <div>
-      <div class="cloud-title">Bulut Durumu</div>
-      <div class="cloud-sub" id="cloud-status-main">Yerel mod · sadece bu cihazda kayıtlı</div>
     </div>
   </div>
 
@@ -1017,9 +1015,6 @@ function updateCloudUi(msg) {
     if (miniActions) miniActions.style.display = 'flex';
   } else if (sb) {
     document.body.classList.remove('logged-in');
-    status.textContent = msg || 'Bulut hazır · giriş bekleniyor';
-    if (statusMain) statusMain.textContent = msg || 'Bulut hazır · giriş bekleniyor';
-    modeBadge.textContent = 'Hazır';
     authBadge.textContent = 'Çıkış yapıldı';
     if (miniActions) miniActions.style.display = 'none';
   } else {
