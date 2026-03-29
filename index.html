@@ -237,7 +237,7 @@ body:not(.logged-in) .tabs{display:none}
 body:not(.logged-in) .cloud-mini-actions{display:none !important}
 body:not(.logged-in) .stats{opacity:.55}
 body.logged-in .cloud-card{display:none}
-.dash-grid,#panel-ozet,#tab-ozet-btn{display:none !important}
+body:not(.logged-in) #tab-ozet-btn {display: none;}
 
 .hero-landing{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;margin-bottom:24px}
 .hero-visual{position:relative;min-height:420px;border:1px solid var(--bord);border-radius:2px;overflow:hidden;background:
@@ -363,10 +363,34 @@ body.logged-in .cloud-card{display:none}
 </section>
 
 <div class="tabs">
+  <button class="tbtn" id="tab-ozet-btn">Özet</button>
   <button class="tbtn on" id="tab-kol-btn">Koleksiyonum</button>
   <button class="tbtn" id="tab-ekle-btn">＋ Yeni Şarap</button>
 </div>
-
+<div class="panel" id="panel-ozet">
+  <div class="dash-grid">
+    <div class="dash-card">
+      <div class="dash-kpi" id="d-total">0</div>
+      <div class="dash-lbl">Toplam Şarap</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-kpi" id="d-avg">—</div>
+      <div class="dash-lbl">Ort. Puan</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-kpi" id="d-val">€0.00</div>
+      <div class="dash-lbl">Koleksiyon Değeri</div>
+    </div>
+    <div class="dash-card" style="grid-column: 1/-1">
+      <div class="dash-title">En Çok Tercih Edilen Ülkeler</div>
+      <div class="dash-list" id="d-countries"></div>
+    </div>
+    <div class="dash-card" style="grid-column: 1/-1">
+      <div class="dash-title">Şarap Türleri Dağılımı</div>
+      <div class="dash-list" id="d-types"></div>
+    </div>
+  </div>
+</div>
 <div class="panel" id="panel-ekle">
   <div class="banner" id="banner">
     <span class="banner-ico">✓</span>
