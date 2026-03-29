@@ -265,6 +265,8 @@ url("https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fi
 .auth-card{display:block}
 .auth-sub{margin-bottom:18px}
 .auth-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.auth-actions .save-btn,.auth-actions .fbtn{margin-top:0;flex:1;justify-content:center;text-align:center}
+.hero-panel .premium-item{justify-content:flex-start}
 .auth-hint{margin-top:12px;font-size:.68rem;line-height:1.7;color:var(--mut)}
 body.logged-in .hero-landing,body.logged-in .auth-card{display:none}
 body:not(.logged-in) .tabs{display:none}
@@ -321,8 +323,11 @@ body.logged-in .cloud-card{display:none}
   <div class="hero-visual">
     <div class="hero-copy">
       <div class="hero-title">İçtiğin şarapları kaydet.</div>
-      <div class="hero-sub">Kendi koleksiyonunu oluştur. Beğendiklerini kolayca tekrar bul.</div>
+      <div class="hero-sub">Beğendiklerini kolayca tekrar bul. Kendi koleksiyonunu oluştur.</div>
       <div class="hero-sub">Hepsini tek yerde tut, not al ve istediğin zaman kolayca geri dön.</div>
+      <div class="hero-actions">
+        <button class="hero-btn" id="hero-signup-btn" type="button">Üye Ol</button>
+        <button class="hero-btn alt" id="hero-login-btn" type="button">Giriş Yap</button>
       </div>
     </div>
   </div>
@@ -368,7 +373,7 @@ body.logged-in .cloud-card{display:none}
   <button class="tbtn" id="tab-ekle-btn">＋ Yeni Şarap</button>
 </div>
 
-<div class="panel on" id="panel-ekle">
+<div class="panel" id="panel-ekle">
   <div class="banner" id="banner">
     <span class="banner-ico">✓</span>
     <div class="banner-txt">
@@ -524,51 +529,6 @@ var sbConfig = {
   key: HARDCODED_SUPABASE_ANON_KEY
 };
 var sb = null;
-  // Supabase init
-sb = supabase.createClient(sbConfig.url, sbConfig.key);
-
-// mevcut session kontrol
-(async () => {
-  const { data } = await sb.auth.getSession();
-  if (data.session) {
-    currentUser = data.session.user;
-    document.body.classList.add('logged-in');
-  }
-})();
-  document.getElementById('login-btn').addEventListener('click', async function () {
-  const email = document.getElementById('auth-email').value;
-  const password = document.getElementById('auth-password').value;
-
-  const { error } = await sb.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  if (error) {
-    showToast('Login hatası: ' + error.message);
-  } else {
-    location.reload();
-  }
-});
-  document.getElementById('signup-btn').addEventListener('click', async function () {
-  const email = document.getElementById('auth-email').value;
-  const password = document.getElementById('auth-password').value;
-
-  const { error } = await sb.auth.signUp({
-    email,
-    password
-  });
-
-  if (error) {
-    showToast('Kayıt hatası: ' + error.message);
-  } else {
-    showToast('Kayıt başarılı. Mailini kontrol et.');
-  }
-});
-  document.getElementById('logout-btn').addEventListener('click', async function () {
-  await sb.auth.signOut();
-  location.reload();
-});
 var currentUser = null;
 
 var catDefs = [
