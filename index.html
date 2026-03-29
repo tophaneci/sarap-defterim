@@ -15,8 +15,13 @@
 }
 html{scroll-behavior:smooth}
 body{font-family:'Josefin Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(139,26,42,.08),transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(201,168,76,.05),transparent 50%);pointer-events:none;z-index:0}
-.wrap{max-width:1100px;margin:0 auto;padding:0 16px;position:relative;z-index:1}
+body::before{content:'';position:fixed;inset:0;background:
+  linear-gradient(180deg,rgba(8,2,4,.45),rgba(8,2,4,.88)),
+  radial-gradient(ellipse at 20% 50%,rgba(139,26,42,.10),transparent 60%),
+  radial-gradient(ellipse at 80% 20%,rgba(201,168,76,.08),transparent 50%),
+  url('https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
+pointer-events:none;z-index:0}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px 36px;position:relative;z-index:1}
 header{padding:28px 0 20px;border-bottom:1px solid var(--bord);margin-bottom:28px}
 .hdr{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .logo h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,6vw,3rem);font-weight:300;color:var(--wht);line-height:1}
@@ -159,6 +164,86 @@ textarea{resize:vertical;min-height:80px;line-height:1.6}
 .m-del:active{border-color:var(--wineh);color:var(--wineh)}
 .secondary-sync{opacity:.75}
 .secondary-sync:hover{opacity:1}
+
+.hero{
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:24px;
+  align-items:stretch;
+  min-height:420px;
+  margin-bottom:26px;
+}
+.hero-copy,
+.hero-login{
+  background:linear-gradient(180deg,rgba(26,12,16,.76),rgba(14,6,8,.92));
+  border:1px solid rgba(201,168,76,.18);
+  backdrop-filter:blur(3px);
+  border-radius:2px;
+}
+.hero-copy{
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding:34px;
+}
+.hero-kicker{
+  font-size:.62rem;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--goldl);
+  margin-bottom:14px;
+}
+.hero-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.3rem,6vw,4.6rem);
+  line-height:.95;
+  color:var(--wht);
+  font-weight:300;
+}
+.hero-title em{color:var(--goldl);font-style:italic}
+.hero-sub{
+  max-width:520px;
+  margin-top:16px;
+  font-size:.95rem;
+  line-height:1.8;
+  color:#e7d7da;
+}
+.hero-points{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:22px;
+}
+.hero-pill{
+  border:1px solid rgba(201,168,76,.22);
+  background:rgba(14,6,8,.45);
+  color:var(--txt);
+  padding:8px 12px;
+  font-size:.58rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.hero-login{padding:26px 24px;display:flex;flex-direction:column;justify-content:center}
+.hero-login-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.6rem;
+  color:var(--wht);
+  font-style:italic;
+  margin-bottom:8px;
+}
+.hero-login-sub{
+  color:var(--mut);
+  font-size:.72rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  margin-bottom:18px;
+}
+body.logged-in .hero{display:none}
+body:not(.logged-in) .tabs,
+body:not(.logged-in) #panel-ekle,
+body:not(.logged-in) #panel-kol,
+body:not(.logged-in) .stats{display:none}
+body:not(.logged-in) .cloud-mini{align-items:flex-end}
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -184,7 +269,6 @@ input:-moz-autofill{
 .cloud-userline{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin-top:10px}
 .cloud-usertext{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);text-align:right}
 .cloud-mini-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-body.logged-in .cloud-card{display:none}
 .cloud-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
 .cloud-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;color:var(--wht);font-style:italic}
 .cloud-sub{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-top:4px}
@@ -215,10 +299,10 @@ body.logged-in .cloud-card{display:none}
 body.logged-in #cloud-login-grid, body.logged-in #login-actions, body.logged-in #cloud-note-auth{display:none}
 body:not(.logged-in) #post-login-actions{display:none}
 body.logged-in #cloud-settings-wrap{display:none}
-body:not(.logged-in) #tab-ekle-btn,
-body:not(.logged-in) #tab-kol-btn{display:none}
 
 @media(max-width:580px){
+  .hero{grid-template-columns:1fr;min-height:auto}
+  .hero-copy,.hero-login{padding:22px}
   .cloud-grid,.dash-grid{grid-template-columns:1fr}
   .fg2{grid-template-columns:1fr}
   .fg.w2,.star-section,.score-box{grid-column:1}
@@ -264,55 +348,49 @@ body:not(.logged-in) #tab-kol-btn{display:none}
   </div>
 </header>
 
+
+<div class="hero" id="landing-hero">
+  <div class="hero-copy">
+    <div class="hero-kicker">Kişisel tadım arşivin</div>
+    <div class="hero-title">Şarap <em>Defterim</em></div>
+    <div class="hero-sub">Şaraplarını tek yerde topla, tadım notlarını kaybetme, favorilerini hızla karşılaştır. Buluta giriş yaptıktan sonra koleksiyonun cihazlar arasında otomatik eşitlensin.</div>
+    <div class="hero-points">
+      <span class="hero-pill">Otomatik Bulut Senkron</span>
+      <span class="hero-pill">Tadım Notları</span>
+      <span class="hero-pill">Koleksiyon Takibi</span>
+    </div>
+  </div>
+
+  <div class="hero-login cloud-card">
+    <div class="hero-login-title">Buluta giriş yap</div>
+    <div class="hero-login-sub">Koleksiyonuna erişmek için hesabınla devam et</div>
+
+    <div class="cloud-grid" id="cloud-login-grid">
+      <div class="fg">
+        <div class="lbl">E-posta</div>
+        <input type="text" id="auth-email" placeholder="sen@eposta.com" autocomplete="username email">
+      </div>
+      <div class="fg">
+        <div class="lbl">Şifre</div>
+        <input type="password" id="auth-password" placeholder="Supabase Auth şifren" autocomplete="current-password">
+      </div>
+    </div>
+    <div class="cloud-actions" id="login-actions">
+      <button class="save-btn" id="login-btn" type="button" style="margin-top:0">Giriş Yap</button>
+    </div>
+    <div class="cloud-actions" id="post-login-actions">
+      <button class="fbtn secondary-sync" id="sync-btn" type="button">Manuel Eşitle</button>
+      <button class="fbtn" id="logout-btn" type="button">Çıkış Yap</button>
+    </div>
+  </div>
+</div>
+
 <div class="tabs">
-  <button class="tbtn on" id="tab-ozet-btn">Özet</button>
-  <button class="tbtn" id="tab-ekle-btn">＋ Yeni Değerlendirme</button>
+  <button class="tbtn on" id="tab-ekle-btn">＋ Yeni Değerlendirme</button>
   <button class="tbtn" id="tab-kol-btn">Koleksiyonum</button>
 </div>
 
-<div class="cloud-card">
-  <div class="cloud-grid" style="margin-top:14px" id="cloud-login-grid">
-    <div class="fg">
-      <div class="lbl">E-posta</div>
-      <input type="text" id="auth-email" placeholder="sen@eposta.com" autocomplete="username email">
-    </div>
-    <div class="fg">
-      <div class="lbl">Şifre</div>
-      <input type="password" id="auth-password" placeholder="Supabase Auth şifren" autocomplete="current-password">
-    </div>
-  </div>
-  <div class="cloud-actions" id="login-actions">
-    <button class="save-btn" id="login-btn" type="button" style="margin-top:0">Giriş Yap</button>
-  </div>
-  <div class="cloud-actions" id="post-login-actions">
-    <button class="fbtn secondary-sync" id="sync-btn" type="button">Manuel Eşitle</button>
-    <button class="fbtn" id="logout-btn" type="button">Çıkış Yap</button>
-  </div>
-</div>
-
-<div class="panel on" id="panel-ozet">
-  <div class="dash-grid">
-    <div class="dash-card"><div class="dash-kpi" id="d-total">0</div><div class="dash-lbl">Toplam Şarap</div></div>
-    <div class="dash-card"><div class="dash-kpi" id="d-avg">—</div><div class="dash-lbl">Ortalama Puan</div></div>
-    <div class="dash-card"><div class="dash-kpi" id="d-best">—</div><div class="dash-lbl">En İyi Puan</div></div>
-  </div>
-  <div class="dash-grid" style="grid-template-columns:1.2fr .8fr .8fr">
-    <div class="dash-card">
-      <div class="dash-title">Son Eklenenler</div>
-      <div class="dash-list" id="dash-recent"></div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-title">Tür Dağılımı</div>
-      <div class="dash-list" id="dash-types"></div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-title">Ülke Dağılımı</div>
-      <div class="dash-list" id="dash-countries"></div>
-    </div>
-  </div>
-</div>
-
-<div class="panel" id="panel-ekle">
+<div class="panel on" id="panel-ekle">
   <div class="banner" id="banner">
     <span class="banner-ico">✓</span>
     <div class="banner-txt">
@@ -565,7 +643,7 @@ function clearImg() {
 function requireAuth() {
   if (!isCloudReady()) {
     showToast('Önce giriş yap', '');
-    switchTab('ozet');
+    if (document.body.classList.contains('logged-in')) switchTab('ekle');
     return false;
   }
   return true;
@@ -663,22 +741,19 @@ function resetForm() {
 
 function switchTab(tab) {
   var map = {
-    ozet: {panel:'panel-ozet', btn:'tab-ozet-btn'},
     ekle: {panel:'panel-ekle', btn:'tab-ekle-btn'},
     kol: {panel:'panel-kol', btn:'tab-kol-btn'}
   };
-  ['panel-ozet','panel-ekle','panel-kol'].forEach(function(id){
+  ['panel-ekle','panel-kol'].forEach(function(id){
     document.getElementById(id).classList.remove('on');
   });
-  ['tab-ozet-btn','tab-ekle-btn','tab-kol-btn'].forEach(function(id){
+  ['tab-ekle-btn','tab-kol-btn'].forEach(function(id){
     document.getElementById(id).classList.remove('on');
   });
   document.getElementById(map[tab].panel).classList.add('on');
   document.getElementById(map[tab].btn).classList.add('on');
   if (tab === 'kol') renderWines();
-  if (tab === 'ozet') renderDashboard();
 }
-document.getElementById('tab-ozet-btn').addEventListener('click', function(){ switchTab('ozet'); });
 document.getElementById('tab-ekle-btn').addEventListener('click', function(){ switchTab('ekle'); });
 document.getElementById('tab-kol-btn').addEventListener('click', function(){ switchTab('kol'); });
 
@@ -891,43 +966,7 @@ function populateFormForEdit(id) {
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
-function renderDashboard() {
-  document.getElementById('d-total').textContent = wines.length;
-  var scored = wines.filter(function(w) { return (w.score || 0) > 0; });
-  document.getElementById('d-avg').textContent = scored.length ? Math.round(scored.reduce(function(a,b){ return a + (b.score || 0); }, 0) / scored.length) : '—';
-  document.getElementById('d-best').textContent = scored.length ? Math.max.apply(null, scored.map(function(w){ return w.score || 0; })) : '—';
-
-  var recentEl = document.getElementById('dash-recent');
-  if (!wines.length) {
-    recentEl.innerHTML = '<div class="dash-empty">Henüz kayıt yok.</div>';
-  } else {
-    recentEl.innerHTML = wines.slice(0,5).map(function(w){
-      return '<div class="dash-item"><div><div class="dash-name">' + w.name + '</div><div class="dash-meta">' +
-        [w.type, w.country, w.year].filter(Boolean).join(' · ') + '</div></div><div class="dash-val">' + (w.score || '—') + '</div></div>';
-    }).join('');
-  }
-
-  function renderCountList(elId, counts) {
-    var el = document.getElementById(elId);
-    var entries = Object.keys(counts).sort(function(a,b){ return counts[b] - counts[a]; });
-    if (!entries.length) {
-      el.innerHTML = '<div class="dash-empty">Henüz kayıt yok.</div>';
-      return;
-    }
-    el.innerHTML = entries.map(function(key){
-      return '<div class="dash-item"><div><div class="dash-name">' + key + '</div></div><div class="dash-val">' + counts[key] + '</div></div>';
-    }).join('');
-  }
-
-  var typeCounts = {};
-  var countryCounts = {};
-  wines.forEach(function(w){
-    typeCounts[w.type || 'Belirsiz'] = (typeCounts[w.type || 'Belirsiz'] || 0) + 1;
-    countryCounts[w.country || 'Belirsiz'] = (countryCounts[w.country || 'Belirsiz'] || 0) + 1;
-  });
-  renderCountList('dash-types', typeCounts);
-  renderCountList('dash-countries', countryCounts);
-}
+function renderDashboard() {}
 
 document.getElementById('mclose').addEventListener('click', closeModal);
 document.getElementById('overlay').addEventListener('click', function(e) {
@@ -1066,9 +1105,9 @@ async function hydrateSession() {
     updateCloudUi();
     renderWines();
     updateStats();
-    renderDashboard();
     await loadCloudWines();
     await syncAllToCloud(false);
+    switchTab('kol');
   } else {
     clearLocalWineState();
     updateCloudUi('Çıkış yapıldı');
@@ -1282,7 +1321,7 @@ if (sb && sb.auth && sb.auth.onAuthStateChange) {
       loadCloudWines();
     } else {
       clearLocalWineState();
-      switchTab('ozet');
+      if (document.body.classList.contains('logged-in')) switchTab('ekle');
     }
   });
 }
