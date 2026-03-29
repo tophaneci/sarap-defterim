@@ -15,13 +15,8 @@
 }
 html{scroll-behavior:smooth}
 body{font-family:'Josefin Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background:
-  linear-gradient(180deg,rgba(8,2,4,.45),rgba(8,2,4,.88)),
-  radial-gradient(ellipse at 20% 50%,rgba(139,26,42,.10),transparent 60%),
-  radial-gradient(ellipse at 80% 20%,rgba(201,168,76,.08),transparent 50%),
-  url('https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
-pointer-events:none;z-index:0}
-.wrap{max-width:1100px;margin:0 auto;padding:0 16px 36px;position:relative;z-index:1}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(139,26,42,.08),transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(201,168,76,.05),transparent 50%);pointer-events:none;z-index:0}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px;position:relative;z-index:1}
 header{padding:28px 0 20px;border-bottom:1px solid var(--bord);margin-bottom:28px}
 .hdr{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .logo h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,6vw,3rem);font-weight:300;color:var(--wht);line-height:1}
@@ -164,86 +159,6 @@ textarea{resize:vertical;min-height:80px;line-height:1.6}
 .m-del:active{border-color:var(--wineh);color:var(--wineh)}
 .secondary-sync{opacity:.75}
 .secondary-sync:hover{opacity:1}
-
-.hero{
-  display:grid;
-  grid-template-columns:1.15fr .85fr;
-  gap:24px;
-  align-items:stretch;
-  min-height:420px;
-  margin-bottom:26px;
-}
-.hero-copy,
-.hero-login{
-  background:linear-gradient(180deg,rgba(26,12,16,.76),rgba(14,6,8,.92));
-  border:1px solid rgba(201,168,76,.18);
-  backdrop-filter:blur(3px);
-  border-radius:2px;
-}
-.hero-copy{
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-end;
-  padding:34px;
-}
-.hero-kicker{
-  font-size:.62rem;
-  letter-spacing:.28em;
-  text-transform:uppercase;
-  color:var(--goldl);
-  margin-bottom:14px;
-}
-.hero-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(2.3rem,6vw,4.6rem);
-  line-height:.95;
-  color:var(--wht);
-  font-weight:300;
-}
-.hero-title em{color:var(--goldl);font-style:italic}
-.hero-sub{
-  max-width:520px;
-  margin-top:16px;
-  font-size:.95rem;
-  line-height:1.8;
-  color:#e7d7da;
-}
-.hero-points{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:22px;
-}
-.hero-pill{
-  border:1px solid rgba(201,168,76,.22);
-  background:rgba(14,6,8,.45);
-  color:var(--txt);
-  padding:8px 12px;
-  font-size:.58rem;
-  letter-spacing:.16em;
-  text-transform:uppercase;
-}
-.hero-login{padding:26px 24px;display:flex;flex-direction:column;justify-content:center}
-.hero-login-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.6rem;
-  color:var(--wht);
-  font-style:italic;
-  margin-bottom:8px;
-}
-.hero-login-sub{
-  color:var(--mut);
-  font-size:.72rem;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  margin-bottom:18px;
-}
-body.logged-in .hero{display:none}
-body:not(.logged-in) .tabs,
-body:not(.logged-in) #panel-ekle,
-body:not(.logged-in) #panel-kol,
-body:not(.logged-in) .stats{display:none}
-body:not(.logged-in) .cloud-mini{align-items:flex-end}
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -269,6 +184,7 @@ input:-moz-autofill{
 .cloud-userline{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin-top:10px}
 .cloud-usertext{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);text-align:right}
 .cloud-mini-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+body.logged-in .cloud-card{display:none}
 .cloud-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
 .cloud-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;color:var(--wht);font-style:italic}
 .cloud-sub{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-top:4px}
@@ -299,11 +215,44 @@ input:-moz-autofill{
 body.logged-in #cloud-login-grid, body.logged-in #login-actions, body.logged-in #cloud-note-auth{display:none}
 body:not(.logged-in) #post-login-actions{display:none}
 body.logged-in #cloud-settings-wrap{display:none}
+body:not(.logged-in) #tab-ekle-btn,
+body:not(.logged-in) #tab-kol-btn{display:none}
+
+.hero-landing{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;margin-bottom:24px}
+.hero-visual{position:relative;min-height:420px;border:1px solid var(--bord);border-radius:2px;overflow:hidden;background:
+linear-gradient(180deg,rgba(8,4,5,.18),rgba(8,4,5,.68)),
+linear-gradient(90deg,rgba(7,3,4,.72),rgba(7,3,4,.28) 45%,rgba(7,3,4,.55)),
+url("https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.hero-visual::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 75% 20%,rgba(232,201,110,.22),transparent 28%),radial-gradient(circle at 20% 85%,rgba(139,26,42,.32),transparent 34%)}
+.hero-copy{position:absolute;left:0;right:0;bottom:0;padding:34px;z-index:1;max-width:620px}
+.hero-kicker{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid rgba(232,201,110,.35);background:rgba(15,7,9,.45);backdrop-filter:blur(8px);font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:var(--goldl);margin-bottom:18px}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,4.6rem);line-height:.95;color:var(--wht);font-weight:300}
+.hero-title em{color:var(--goldl);font-style:italic}
+.hero-sub{margin-top:14px;max-width:540px;font-size:.92rem;line-height:1.8;color:#eadde0}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.hero-btn{display:inline-flex;align-items:center;justify-content:center;min-width:180px;padding:14px 20px;border:1px solid var(--wineh);background:var(--wine);color:var(--wht);text-decoration:none;font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;cursor:pointer}
+.hero-btn.alt{background:rgba(12,7,8,.45);border-color:rgba(232,201,110,.35);color:var(--goldl);backdrop-filter:blur(6px)}
+.hero-side{display:flex;flex-direction:column;gap:18px}
+.hero-panel,.auth-card{background:linear-gradient(180deg,rgba(26,12,16,.96),rgba(20,10,13,.94));border:1px solid var(--bord);border-radius:2px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.18)}
+.hero-panel h3,.auth-title{font-family:'Cormorant Garamond',serif;font-size:1.45rem;color:var(--wht);font-style:italic;font-weight:300}
+.hero-panel p,.auth-sub{margin-top:8px;font-size:.76rem;line-height:1.8;color:#d8c8cc}
+.premium-list{display:flex;flex-direction:column;gap:12px;margin-top:18px}
+.premium-item{display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid rgba(61,31,40,.9)}
+.premium-item:last-child{border-bottom:none;padding-bottom:0}
+.premium-item span{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mut)}
+.premium-item strong{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--goldl);font-weight:300}
+.auth-card{display:block}
+.auth-sub{margin-bottom:18px}
+.auth-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.auth-hint{margin-top:12px;font-size:.68rem;line-height:1.7;color:var(--mut)}
+body.logged-in .hero-landing,body.logged-in .auth-card{display:none}
+body:not(.logged-in) .tabs{display:none}
+body:not(.logged-in) .cloud-mini-actions{display:none !important}
+body:not(.logged-in) .stats{opacity:.55}
+body.logged-in .cloud-card{display:none}
 
 @media(max-width:580px){
-  .hero{grid-template-columns:1fr;min-height:auto}
-  .hero-copy,.hero-login{padding:22px}
-  .cloud-grid,.dash-grid{grid-template-columns:1fr}
+  .cloud-grid,.dash-grid,.hero-landing{grid-template-columns:1fr}
   .fg2{grid-template-columns:1fr}
   .fg.w2,.star-section,.score-box{grid-column:1}
   .stats{gap:14px}.stn{font-size:1.5rem}
@@ -348,42 +297,54 @@ body.logged-in #cloud-settings-wrap{display:none}
   </div>
 </header>
 
-
-<div class="hero" id="landing-hero">
-  <div class="hero-copy">
-    <div class="hero-kicker">Kişisel tadım arşivin</div>
-    <div class="hero-title">Şarap <em>Defterim</em></div>
-    <div class="hero-sub">Şaraplarını tek yerde topla, tadım notlarını kaybetme, favorilerini hızla karşılaştır. Buluta giriş yaptıktan sonra koleksiyonun cihazlar arasında otomatik eşitlensin.</div>
-    <div class="hero-points">
-      <span class="hero-pill">Otomatik Bulut Senkron</span>
-      <span class="hero-pill">Tadım Notları</span>
-      <span class="hero-pill">Koleksiyon Takibi</span>
-    </div>
-  </div>
-
-  <div class="hero-login cloud-card">
-    <div class="hero-login-title">Buluta giriş yap</div>
-    <div class="hero-login-sub">Koleksiyonuna erişmek için hesabınla devam et</div>
-
-    <div class="cloud-grid" id="cloud-login-grid">
-      <div class="fg">
-        <div class="lbl">E-posta</div>
-        <input type="text" id="auth-email" placeholder="sen@eposta.com" autocomplete="username email">
-      </div>
-      <div class="fg">
-        <div class="lbl">Şifre</div>
-        <input type="password" id="auth-password" placeholder="Supabase Auth şifren" autocomplete="current-password">
+<section class="hero-landing">
+  <div class="hero-visual">
+    <div class="hero-copy">
+      <div class="hero-kicker">Private Cellar Experience</div>
+      <div class="hero-title">Şarap notlarını <em>premium</em> bir mahzene taşı.</div>
+      <div class="hero-sub">Koleksiyonunu estetik bir arşivde tut, şişeleri puanla, nereden aldığını unutma ve her tadımı aynı kalitede kaydet. Bu artık basit bir liste değil; kişisel şarap hafızan.</div>
+      <div class="hero-actions">
+        <button class="hero-btn" id="hero-signup-btn" type="button">Üye Ol</button>
+        <button class="hero-btn alt" id="hero-login-btn" type="button">Giriş Yap</button>
       </div>
     </div>
-    <div class="cloud-actions" id="login-actions">
-      <button class="save-btn" id="login-btn" type="button" style="margin-top:0">Giriş Yap</button>
+  </div>
+  <div class="hero-side">
+    <div class="hero-panel">
+      <h3>Premium his veren bir tadım günlüğü</h3>
+      <p>Şişe, bağ, ülke, puan, fiyat ve eşleşme notlarını tek yerde sakla. Her kayıt daha sonra dönüp gerçekten kullanacağın kadar düzenli olsun.</p>
+      <div class="premium-list">
+        <div class="premium-item"><span>Cinematic Landing</span><strong>Toskana hissi</strong></div>
+        <div class="premium-item"><span>Private Cloud Sync</span><strong>Her cihazda aynı arşiv</strong></div>
+        <div class="premium-item"><span>Fast Tasting Flow</span><strong>Hızlı kayıt, temiz detay</strong></div>
+      </div>
     </div>
-    <div class="cloud-actions" id="post-login-actions">
-      <button class="fbtn secondary-sync" id="sync-btn" type="button">Manuel Eşitle</button>
-      <button class="fbtn" id="logout-btn" type="button">Çıkış Yap</button>
+
+    <div class="auth-card cloud-card">
+      <div class="auth-title">Giriş yap veya yeni üye ol</div>
+      <div class="auth-sub">Yeni hesap açtıktan sonra aynı bilgilerle giriş yapıp kendi koleksiyonunu oluşturmaya başlayabilirsin.</div>
+      <div class="cloud-grid" id="cloud-login-grid">
+        <div class="fg">
+          <div class="lbl">E-posta</div>
+          <input type="text" id="auth-email" placeholder="sen@eposta.com" autocomplete="username email">
+        </div>
+        <div class="fg">
+          <div class="lbl">Şifre</div>
+          <input type="password" id="auth-password" placeholder="En az 6 karakter" autocomplete="current-password">
+        </div>
+      </div>
+      <div class="auth-actions" id="login-actions">
+        <button class="save-btn" id="login-btn" type="button" style="margin-top:0">Giriş Yap</button>
+        <button class="fbtn" id="signup-btn" type="button">Üye Ol</button>
+      </div>
+      <div class="auth-hint">Supabase tarafında e-posta doğrulaması açıksa, üyelikten sonra mail kutunu da kontrol et.</div>
+      <div class="cloud-actions" id="post-login-actions">
+        <button class="fbtn secondary-sync" id="sync-btn" type="button">Manuel Eşitle</button>
+        <button class="fbtn" id="logout-btn" type="button">Çıkış Yap</button>
+      </div>
     </div>
   </div>
-</div>
+</section>
 
 <div class="tabs">
   <button class="tbtn on" id="tab-ekle-btn">＋ Yeni Değerlendirme</button>
@@ -643,7 +604,7 @@ function clearImg() {
 function requireAuth() {
   if (!isCloudReady()) {
     showToast('Önce giriş yap', '');
-    if (document.body.classList.contains('logged-in')) switchTab('ekle');
+    switchTab('ozet');
     return false;
   }
   return true;
@@ -966,7 +927,7 @@ function populateFormForEdit(id) {
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
-function renderDashboard() {}
+function renderDashboard() { return; }
 
 document.getElementById('mclose').addEventListener('click', closeModal);
 document.getElementById('overlay').addEventListener('click', function(e) {
@@ -1105,9 +1066,9 @@ async function hydrateSession() {
     updateCloudUi();
     renderWines();
     updateStats();
+    renderDashboard();
     await loadCloudWines();
     await syncAllToCloud(false);
-    switchTab('kol');
   } else {
     clearLocalWineState();
     updateCloudUi('Çıkış yapıldı');
@@ -1280,8 +1241,41 @@ async function loginToCloud() {
   updateCloudUi('Bulut bağlı · giriş yapıldı');
   await syncAllToCloud(false);
   await loadCloudWines();
-  switchTab('ozet');
+  switchTab('kol');
   showToast('Giriş yaptın', 'ok');
+}
+
+async function signUpToCloud() {
+  if (!sb && !initSupabaseClient()) {
+    showToast('Supabase bağlantısı hazır değil', '');
+    return;
+  }
+  var email = document.getElementById('auth-email').value.trim();
+  var password = document.getElementById('auth-password').value.trim();
+  if (!email || !password) {
+    showToast('E-posta ve şifre gerekli', '');
+    return;
+  }
+  if (password.length < 6) {
+    showToast('Şifre en az 6 karakter olmalı', '');
+    return;
+  }
+  var result = await sb.auth.signUp({ email: email, password: password });
+  if (result.error) {
+    console.error(result.error);
+    showToast(result.error.message || 'Üyelik başarısız', '');
+    return;
+  }
+  if (result.data && result.data.session && result.data.user) {
+    currentUser = result.data.user;
+    loadPersistedWines();
+    updateCloudUi('Hesap açıldı · giriş yapıldı');
+    await loadCloudWines();
+    switchTab('kol');
+    showToast('Hesap oluşturuldu', 'ok');
+    return;
+  }
+  showToast('Üyelik oluşturuldu. Gerekirse e-postanı doğrula, sonra giriş yap.', 'ok');
 }
 
 async function logoutFromCloud() {
@@ -1294,12 +1288,14 @@ async function logoutFromCloud() {
   currentUser = null;
   document.getElementById('auth-password').value = '';
   clearLocalWineState();
-  switchTab('ozet');
   updateCloudUi('Çıkış yapıldı');
   showToast('Çıkış yapıldı', 'ok');
 }
 
 document.getElementById('login-btn').addEventListener('click', loginToCloud);
+document.getElementById('signup-btn').addEventListener('click', signUpToCloud);
+document.getElementById('hero-login-btn').addEventListener('click', function(){ document.getElementById('auth-email').focus(); });
+document.getElementById('hero-signup-btn').addEventListener('click', function(){ document.getElementById('auth-email').focus(); });
 document.getElementById('logout-btn').addEventListener('click', logoutFromCloud);
 document.getElementById('logout-btn-mini').addEventListener('click', logoutFromCloud);
 document.getElementById('sync-btn').addEventListener('click', function(){ syncAllToCloud(true); });
@@ -1321,7 +1317,6 @@ if (sb && sb.auth && sb.auth.onAuthStateChange) {
       loadCloudWines();
     } else {
       clearLocalWineState();
-      if (document.body.classList.contains('logged-in')) switchTab('ekle');
     }
   });
 }
