@@ -2,1336 +2,163 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Şarap Defterim</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond&family=Josefin+Sans&display=swap" rel="stylesheet">
+
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0e0608;--surf:#1a0c10;--surf2:#221018;--bord:#3d1f28;
-  --wine:#8b1a2a;--wineh:#c4304a;--gold:#c9a84c;--goldl:#e8c96e;
-  --txt:#f0e6e8;--mut:#9a7a82;--wht:#fff8f9;
-  --green:#1a5c35;--greenl:#4caf7d;
+body{
+  margin:0;
+  font-family:'Josefin Sans',sans-serif;
+  color:#fff;
+  background:#0e0608;
 }
-html{scroll-behavior:smooth}
-body{font-family:'Josefin Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(139,26,42,.08),transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(201,168,76,.05),transparent 50%);pointer-events:none;z-index:0}
-.wrap{max-width:1100px;margin:0 auto;padding:0 16px;position:relative;z-index:1}
-header{padding:28px 0 20px;border-bottom:1px solid var(--bord);margin-bottom:28px}
-.hdr{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.logo h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,6vw,3rem);font-weight:300;color:var(--wht);line-height:1}
-.logo h1 em{color:var(--gold);font-style:italic}
-.logo p{font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;color:var(--mut);margin-top:4px}
-.stats{display:flex;gap:20px}
-.stat{text-align:center}
-.stn{font-family:'Cormorant Garamond',serif;font-size:1.7rem;color:var(--gold);font-weight:300;line-height:1}
-.stl{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);margin-top:2px}
-.tabs{display:flex;border-bottom:1px solid var(--bord);margin-bottom:24px;overflow-x:auto;-webkit-overflow-scrolling:touch}
-.tabs::-webkit-scrollbar{display:none}
-.tbtn{background:none;border:none;color:var(--mut);font-family:'Josefin Sans',sans-serif;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;padding:10px 18px 12px;cursor:pointer;white-space:nowrap;position:relative;transition:color .2s;flex-shrink:0;-webkit-tap-highlight-color:transparent}
-.tbtn::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:var(--wineh);transform:scaleX(0);transition:transform .25s}
-.tbtn.on{color:var(--wht)}.tbtn.on::after{transform:scaleX(1)}
-.panel{display:none}.panel.on{display:block}
-.fcard{background:var(--surf);border:1px solid var(--bord);border-radius:2px;padding:24px;max-width:680px}
-.ftit{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;font-style:italic;color:var(--wht);margin-bottom:20px}
-.fg2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.fg{display:flex;flex-direction:column;gap:5px}
-.fg.w2{grid-column:1/-1}
-.lbl{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--mut)}
-input[type=text],
-input[type=password],
-input[type=number],
-select,
-textarea{
-  background:var(--bg);border:1px solid var(--bord);color:var(--txt);font-family:'Josefin Sans',sans-serif;
-  font-size:.88rem;padding:9px 12px;border-radius:1px;outline:none;transition:border-color .2s;width:100%;
-  -webkit-appearance:none;appearance:none
-}
-input:focus,select:focus,textarea:focus{border-color:var(--wineh)}
-select option{background:#1a0c10}
-textarea{resize:vertical;min-height:80px;line-height:1.6}
-.price-wrap{position:relative}
-.price-wrap::before{content:'€';position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--mut);pointer-events:none;font-size:.88rem}
-.price-wrap input{padding-left:26px}
-.drop-area{border:1.5px dashed var(--bord);border-radius:2px;padding:18px;text-align:center;cursor:pointer;position:relative;background:var(--bg);transition:border-color .2s;overflow:hidden}
-.drop-area:hover,.drop-area.drag{border-color:var(--wineh)}
-.drop-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;font-size:0}
-.drop-icon{font-size:1.6rem;display:block;margin-bottom:4px}
-.drop-txt{font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--mut)}
-.img-prev{display:none;margin-top:10px;position:relative}
-.img-prev img{width:100%;max-height:200px;object-fit:cover;border-radius:1px;border:1px solid var(--bord);display:block}
-.img-rmv{position:absolute;top:8px;right:8px;background:rgba(14,6,8,.9);border:1px solid var(--wineh);color:var(--wht);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;cursor:pointer;border-radius:1px;-webkit-tap-highlight-color:transparent}
-.star-section{grid-column:1/-1}
-.star-rows{display:flex;flex-direction:column;gap:8px;margin-top:6px}
-.star-row{display:flex;align-items:center;gap:10px}
-.srl{font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--mut);width:64px;flex-shrink:0}
-.stars{display:flex;gap:4px}
-.star{font-size:26px;color:var(--bord);cursor:pointer;line-height:1;user-select:none;-webkit-tap-highlight-color:transparent;transition:color .12s;padding:3px}
-.star.on{color:var(--gold)}
-.score-box{grid-column:1/-1;display:flex;align-items:center;gap:12px;background:var(--surf2);border:1px solid var(--bord);padding:14px 16px;border-radius:1px}
-.score-n{font-family:'Cormorant Garamond',serif;font-size:2.8rem;color:var(--goldl);font-weight:300;line-height:1;min-width:52px}
-.score-sub{display:flex;flex-direction:column;gap:3px}
-.score-lbl{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
-.score-desc{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--wineh);font-style:italic}
-.save-btn{margin-top:18px;background:var(--wine);border:1px solid var(--wineh);color:var(--wht);font-family:'Josefin Sans',sans-serif;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;padding:13px 30px;cursor:pointer;border-radius:1px;transition:background .25s;display:inline-block;-webkit-tap-highlight-color:transparent}
-.save-btn:hover{background:var(--wineh)}
-.save-btn:active{opacity:.85}
-.save-btn.saved{background:var(--green);border-color:var(--greenl)}
-.banner{display:none;align-items:center;gap:10px;background:#0d2419;border:1px solid var(--greenl);padding:12px 16px;border-radius:2px;margin-bottom:18px}
-.banner.on{display:flex}
-.banner-ico{font-size:1.1rem}
-.banner-txt{flex:1}
-.banner-name{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:#7ee8a2;font-style:italic}
-.banner-sub{font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--greenl);margin-top:1px}
-.banner-x{background:none;border:none;color:var(--greenl);cursor:pointer;font-size:.95rem;padding:0 4px;line-height:1}
-.toolbar{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;align-items:center}
-.fbtn{background:none;border:1px solid var(--bord);color:var(--mut);font-family:'Josefin Sans',sans-serif;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;padding:6px 12px;cursor:pointer;border-radius:1px;transition:all .2s;white-space:nowrap;-webkit-tap-highlight-color:transparent}
-.fbtn.on,.fbtn:hover{border-color:var(--wineh);color:var(--wht);background:rgba(139,26,42,.15)}
-.tr{display:flex;gap:8px;margin-left:auto;align-items:center}
-.srch{max-width:160px;padding:6px 10px;font-size:.78rem}
-.srt{max-width:140px;font-size:.65rem;padding:6px 10px;background:var(--surf)}
-.vtog{display:flex;gap:3px}
-.vbtn{background:none;border:1px solid var(--bord);color:var(--mut);padding:6px 10px;cursor:pointer;border-radius:1px;font-size:.9rem;transition:all .2s;line-height:1;-webkit-tap-highlight-color:transparent}
-.vbtn.on,.vbtn:hover{border-color:var(--wineh);color:var(--wht);background:rgba(139,26,42,.15)}
-.wine-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
-.wcard{background:var(--surf);border:1px solid var(--bord);border-radius:2px;cursor:pointer;position:relative;overflow:hidden;transition:border-color .2s;-webkit-tap-highlight-color:transparent}
-.wcard::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--wine)}
-.wcard:active{border-color:var(--wineh)}.wcard:active::before{background:var(--wineh)}
-.wcard-img{width:100%;height:130px;object-fit:cover;display:block;border-bottom:1px solid var(--bord)}
-.wcard-body{padding:14px}
-.wcard-badge{font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin-bottom:5px}
-.wcard-name{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--wht);line-height:1.3;margin-bottom:2px}
-.wcard-prod{font-size:.72rem;color:var(--mut);margin-bottom:10px}
-.wcard-notes{font-family:'Cormorant Garamond',serif;font-size:.88rem;color:#c8a8b0;font-style:italic;line-height:1.5;margin-bottom:10px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.wcard-foot{display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid var(--bord)}
-.wcard-score{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--gold);font-weight:300;line-height:1}
-.wcard-score span{font-size:.75rem;color:var(--mut)}
-.wcard-stars{font-size:11px;color:var(--gold)}
-.wcard-date{font-size:.58rem;letter-spacing:.1em;color:var(--mut)}
-.wcard-price{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--goldl)}
-.del-btn{position:absolute;top:8px;right:8px;background:rgba(14,6,8,.85);border:1px solid var(--bord);color:var(--mut);cursor:pointer;font-size:11px;padding:5px 8px;border-radius:1px;transition:all .2s;line-height:1;z-index:2;-webkit-tap-highlight-color:transparent;min-width:28px;min-height:28px}
-.del-btn:active{color:var(--wineh);border-color:var(--wineh)}
-.wine-list{display:flex;flex-direction:column;gap:1px}
-.wrow{background:var(--surf);border:1px solid var(--bord);border-radius:1px;display:flex;align-items:center;position:relative;overflow:hidden;cursor:pointer;transition:border-color .2s;-webkit-tap-highlight-color:transparent}
-.wrow::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--wine)}
-.wrow:active{border-color:var(--wineh)}.wrow:active::before{background:var(--wineh)}
-.wrow-thumb{width:58px;height:58px;object-fit:cover;flex-shrink:0;border-right:1px solid var(--bord)}
-.wrow-ph{width:58px;height:58px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;border-right:1px solid var(--bord);background:var(--surf2)}
-.wrow-body{flex:1;padding:10px 12px;min-width:0}
-.wrow-name{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--wht);line-height:1.2}
-.wrow-meta{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.wrow-right{padding:10px 8px 10px 0;text-align:right;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
-.wrow-score{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--gold);font-weight:300;line-height:1}
-.wrow-score span{font-size:.7rem;color:var(--mut)}
-.wrow-price{font-size:.68rem;color:var(--mut)}
-.wrow-del{background:none;border:none;color:var(--bord);cursor:pointer;font-size:12px;padding:6px 8px;line-height:1;transition:color .2s;-webkit-tap-highlight-color:transparent;min-width:28px;min-height:28px}
-.wrow-del:active{color:var(--wineh)}
-.empty{text-align:center;padding:60px 16px;color:var(--mut);grid-column:1/-1}
-.empty-ico{font-size:2.4rem;margin-bottom:10px;opacity:.4}
-.empty h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:300;font-style:italic;color:var(--mut);margin-bottom:6px}
-.empty p{font-size:.7rem;letter-spacing:.1em}
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:200;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px}
-.overlay.on{display:flex;align-items:flex-start;justify-content:center}
-.modal{background:var(--surf);border:1px solid var(--bord);border-radius:2px;width:100%;max-width:540px;margin:auto;position:relative}
-.modal-img{width:100%;max-height:240px;object-fit:cover;display:block;border-bottom:1px solid var(--bord)}
-.modal-body{padding:20px}
-.mclose{position:absolute;top:10px;right:10px;background:rgba(14,6,8,.9);border:1px solid var(--bord);color:var(--wht);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;z-index:3;-webkit-tap-highlight-color:transparent;line-height:1}
-.mclose:active{border-color:var(--wineh)}
-.m-badge{font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mut);margin-bottom:6px}
-.m-name{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:300;color:var(--wht);line-height:1.2;margin-bottom:3px}
-.m-prod{font-size:.8rem;color:var(--mut);margin-bottom:18px}
-.m-scorebox{display:flex;align-items:center;gap:14px;background:var(--surf2);border:1px solid var(--bord);padding:14px;border-radius:1px;margin-bottom:16px}
-.m-score-big{font-family:'Cormorant Garamond',serif;font-size:2.8rem;color:var(--goldl);font-weight:300;line-height:1}
-.m-score-stars{font-size:15px;color:var(--gold)}
-.m-score-lbl{font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mut);margin-top:3px}
-.m-cats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
-.m-cat{background:var(--surf2);border:1px solid var(--bord);padding:9px 11px;border-radius:1px}
-.m-cat-lbl{font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:var(--mut);margin-bottom:3px}
-.m-cat-stars{font-size:12px;color:var(--gold)}
-.m-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
-.m-chip{background:var(--surf2);border:1px solid var(--bord);padding:7px 12px;border-radius:1px;text-align:center}
-.m-chip-val{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--goldl)}
-.m-chip-lbl{font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:var(--mut);margin-top:2px}
-.m-sec{margin-bottom:14px}
-.m-sec-lbl{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);margin-bottom:5px}
-.m-sec-val{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--txt);line-height:1.65;font-style:italic}
-.m-del{background:none;border:1px solid var(--bord);color:var(--mut);font-family:'Josefin Sans',sans-serif;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;padding:9px;cursor:pointer;border-radius:1px;width:100%;margin-top:6px;transition:all .2s;-webkit-tap-highlight-color:transparent}
-.m-del:active{border-color:var(--wineh);color:var(--wineh)}
-.secondary-sync{opacity:.75}
-.secondary-sync:hover{opacity:1}
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active{
-  -webkit-text-fill-color: var(--txt);
-  -webkit-box-shadow: 0 0 0 1000px var(--bg) inset;
-  box-shadow: 0 0 0 1000px var(--bg) inset;
-  transition: background-color 9999s ease-in-out 0s;
-}
-input:-moz-autofill{
-  box-shadow: 0 0 0 1000px var(--bg) inset !important;
-  -moz-text-fill-color: var(--txt) !important;
-  border:1px solid var(--bord) !important;
-}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--surf2);border:1px solid var(--wineh);color:var(--wht);font-size:.72rem;letter-spacing:.1em;padding:10px 20px;border-radius:2px;z-index:999;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
-.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
-.toast.ok{border-color:var(--greenl);background:#0d2419}
-.wcard.bye,.wrow.bye{animation:bye .28s ease forwards}
-@keyframes bye{to{opacity:0;transform:scaleY(.85)}}
 
-.cloud-card{background:var(--surf);border:1px solid var(--bord);padding:18px 20px;margin:0 0 22px;border-radius:2px}
-.cloud-mini{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
-.cloud-userline{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin-top:10px}
-.cloud-usertext{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);text-align:right}
-.cloud-mini-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-body.logged-in .cloud-card{display:none}
-.cloud-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
-.cloud-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;color:var(--wht);font-style:italic}
-.cloud-sub{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-top:4px}
-.cloud-badges{display:flex;gap:8px;flex-wrap:wrap}
-.cloud-badge{border:1px solid var(--bord);padding:6px 10px;font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);border-radius:1px;background:var(--surf2)}
-.cloud-details{margin-top:14px;border-top:1px solid var(--bord);padding-top:14px}
-.cloud-details summary{cursor:pointer;color:var(--goldl);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;list-style:none}
-.cloud-details summary::-webkit-details-marker{display:none}
-.cloud-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
-.cloud-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
-.cloud-note{margin-top:12px;color:var(--mut);font-size:.68rem;line-height:1.6}
-
-.dash-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
-.dash-card{background:var(--surf);border:1px solid var(--bord);padding:18px;border-radius:2px}
-.dash-kpi{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--goldl);line-height:1}
-.dash-lbl{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);margin-top:5px}
-.dash-title{font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--wht);font-style:italic;margin-bottom:12px}
-.dash-list{display:flex;flex-direction:column;gap:10px}
-.dash-item{display:flex;justify-content:space-between;gap:10px;padding-bottom:10px;border-bottom:1px solid var(--bord)}
-.dash-item:last-child{border-bottom:none;padding-bottom:0}
-.dash-name{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--wht)}
-.dash-meta{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-top:2px}
-.dash-val{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--gold)}
-.dash-empty{color:var(--mut);font-size:.78rem}
-.m-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.m-edit{background:var(--wine);border:1px solid var(--wineh);color:var(--wht);font-family:'Josefin Sans',sans-serif;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;padding:9px;cursor:pointer;border-radius:1px;flex:1}
-.m-edit:active{opacity:.85}
-body.logged-in #cloud-login-grid, body.logged-in #login-actions, body.logged-in #cloud-note-auth{display:none}
-body:not(.logged-in) #post-login-actions{display:none}
-body.logged-in #cloud-settings-wrap{display:none}
-body:not(.logged-in) #tab-ekle-btn,
-body:not(.logged-in) #tab-kol-btn{display:none}
-
-.hero-landing{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;margin-bottom:24px}
-.hero-visual{position:relative;min-height:420px;border:1px solid var(--bord);border-radius:2px;overflow:hidden;background:
-linear-gradient(180deg,rgba(8,4,5,.18),rgba(8,4,5,.68)),
-linear-gradient(90deg,rgba(7,3,4,.72),rgba(7,3,4,.28) 45%,rgba(7,3,4,.55)),
-url("https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat;box-shadow:0 20px 60px rgba(0,0,0,.25)}
-.hero-visual::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 75% 20%,rgba(232,201,110,.22),transparent 28%),radial-gradient(circle at 20% 85%,rgba(139,26,42,.32),transparent 34%)}
-.hero-copy{position:absolute;left:0;right:0;bottom:0;padding:34px;z-index:1;max-width:620px}
-.hero-kicker{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid rgba(232,201,110,.35);background:rgba(15,7,9,.45);backdrop-filter:blur(8px);font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:var(--goldl);margin-bottom:18px}
-.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,4.6rem);line-height:.95;color:var(--wht);font-weight:300}
-.hero-title em{color:var(--goldl);font-style:italic}
-.hero-sub{margin-top:14px;max-width:540px;font-size:.92rem;line-height:1.8;color:#eadde0}
-.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
-.hero-btn{display:inline-flex;align-items:center;justify-content:center;min-width:180px;padding:14px 20px;border:1px solid var(--wineh);background:var(--wine);color:var(--wht);text-decoration:none;font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;cursor:pointer}
-.hero-btn.alt{background:rgba(12,7,8,.45);border-color:rgba(232,201,110,.35);color:var(--goldl);backdrop-filter:blur(6px)}
-.hero-side{display:flex;flex-direction:column;gap:18px}
-.hero-panel,.auth-card{background:linear-gradient(180deg,rgba(26,12,16,.96),rgba(20,10,13,.94));border:1px solid var(--bord);border-radius:2px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.18)}
-.hero-panel h3,.auth-title{font-family:'Cormorant Garamond',serif;font-size:1.45rem;color:var(--wht);font-style:italic;font-weight:300}
-.hero-panel p,.auth-sub{margin-top:8px;font-size:.76rem;line-height:1.8;color:#d8c8cc}
-.premium-list{display:flex;flex-direction:column;gap:12px;margin-top:18px}
-.premium-item{display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid rgba(61,31,40,.9)}
-.premium-item:last-child{border-bottom:none;padding-bottom:0}
-.premium-item span{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mut)}
-.premium-item strong{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--goldl);font-weight:300}
-.auth-card{display:block}
-.auth-sub{margin-bottom:18px}
-.auth-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-.auth-hint{margin-top:12px;font-size:.68rem;line-height:1.7;color:var(--mut)}
-body.logged-in .hero-landing,body.logged-in .auth-card{display:none}
-body:not(.logged-in) .tabs{display:none}
-body:not(.logged-in) .cloud-mini-actions{display:none !important}
-body:not(.logged-in) .stats{opacity:.55}
-body.logged-in .cloud-card{display:none}
-
-@media(max-width:580px){
-  .cloud-grid,.dash-grid,.hero-landing{grid-template-columns:1fr}
-  .fg2{grid-template-columns:1fr}
-  .fg.w2,.star-section,.score-box{grid-column:1}
-  .stats{gap:14px}.stn{font-size:1.5rem}
-  .toolbar{flex-wrap:wrap}
-  .tr{width:100%;margin-left:0}
-  .srch{flex:1;max-width:none}
-  .wine-grid{grid-template-columns:1fr 1fr;gap:10px}
-  .wcard-body{padding:10px}
+/* LANDING */
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:40px;
+  background:
+    linear-gradient(rgba(14,6,8,.5),rgba(14,6,8,.7)),
+    url('https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?q=80&w=1600');
+  background-size:cover;
+  background-position:center;
 }
-@media(max-width:380px){.wine-grid{grid-template-columns:1fr}}
+
+.hero-text{
+  max-width:500px;
+}
+
+.hero h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.2rem;
+  line-height:1.4;
+}
+
+.hero p{
+  color:#c8a8b0;
+  margin-top:15px;
+  line-height:1.7;
+}
+
+.features{
+  margin-top:20px;
+  color:#aaa;
+  font-size:.8rem;
+}
+
+.features div{
+  margin-bottom:6px;
+}
+
+/* LOGIN */
+.login-box{
+  background:#1a0c10;
+  padding:30px;
+  border:1px solid #3d1f28;
+  width:300px;
+}
+
+input{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  background:#0e0608;
+  border:1px solid #3d1f28;
+  color:#fff;
+}
+
+/* CTA */
+.cta{
+  margin-top:20px;
+  width:100%;
+  padding:12px;
+  background:#8b1a2a;
+  border:none;
+  color:#fff;
+  letter-spacing:.1em;
+  cursor:pointer;
+}
+
+.small{
+  font-size:.7rem;
+  margin-top:10px;
+  color:#aaa;
+}
 </style>
 
-<link rel="manifest" href="./manifest.webmanifest">
-<meta name="theme-color" content="#8b1a2a">
-<link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </head>
+
 <body>
-<div class="wrap">
-<header>
-  <div class="hdr">
-    <div class="logo">
-      <h1>Şarap <em>Defterim</em></h1>
-      <p>Kişisel Şarap Arşivi</p>
-    </div>
-    <div class="cloud-mini">
-      <div class="stats">
-        <div class="stat"><div class="stn" id="st-n">0</div><div class="stl">Şarap</div></div>
-        <div class="stat"><div class="stn" id="st-a">—</div><div class="stl">Ort.</div></div>
-        <div class="stat"><div class="stn" id="st-b">—</div><div class="stl">En İyi</div></div>
-      </div>
-      <div class="cloud-userline">
-        <span class="cloud-badge" id="cloud-mode-badge">Yerel</span>
-        <span class="cloud-badge" id="cloud-auth-badge">Çıkış yapıldı</span>
-        <span class="cloud-usertext" id="cloud-status-header">Yerel mod · sadece bu cihazda kayıtlı</span>
-      </div>
-      <div class="cloud-mini-actions" id="post-login-actions-mini" style="display:none">
-        <button class="fbtn secondary-sync" id="sync-btn-mini" type="button">Manuel Eşitle</button>
-        <button class="fbtn" id="logout-btn-mini" type="button">Çıkış Yap</button>
-      </div>
+
+<div class="hero">
+
+  <div class="hero-text">
+    <h1>
+      İçtiğin şarapları kaydet.<br>
+      Beğendiklerini kolayca tekrar bul.<br>
+      Kendi koleksiyonunu oluştur.
+    </h1>
+
+    <p>
+      Kendi şarap arşivin. Sade ve doğal bir deneyimle.<br>
+      İster evde açtığın bir şişe, ister bir restoranda keşfettiğin özel bir seçim.<br>
+      Hepsini tek yerde tut, not al ve istediğin zaman kolayca geri dön.
+    </p>
+
+    <div class="features">
+      <div>• Tüm tadım geçmişin tek yerde</div>
+      <div>• Tek hesapla her yerden erişim</div>
+      <div>• Hızlı kayıt, zahmetsiz kullanım</div>
     </div>
   </div>
-</header>
 
-<section class="hero-landing">
-  <div class="hero-visual">
-    <div class="hero-copy">
-      <div class="hero-kicker">Private Cellar Experience</div>
-      <div class="hero-title">Şarap notlarını <em>premium</em> bir mahzene taşı.</div>
-      <div class="hero-sub">Koleksiyonunu estetik bir arşivde tut, şişeleri puanla, nereden aldığını unutma ve her tadımı aynı kalitede kaydet. Bu artık basit bir liste değil; kişisel şarap hafızan.</div>
-      <div class="hero-actions">
-        <button class="hero-btn" id="hero-signup-btn" type="button">Üye Ol</button>
-        <button class="hero-btn alt" id="hero-login-btn" type="button">Giriş Yap</button>
-      </div>
+  <div class="login-box">
+
+    <input id="email" placeholder="E-posta">
+    <input id="password" type="password" placeholder="Şifre">
+
+    <button class="cta" onclick="login()">
+      Arşivimi Oluşturmaya Başla
+    </button>
+
+    <div class="small">
+      Zaten hesabın var mı?
     </div>
+
   </div>
-  <div class="hero-side">
-    <div class="hero-panel">
-      <h3>Premium his veren bir tadım günlüğü</h3>
-      <p>Şişe, bağ, ülke, puan, fiyat ve eşleşme notlarını tek yerde sakla. Her kayıt daha sonra dönüp gerçekten kullanacağın kadar düzenli olsun.</p>
-      <div class="premium-list">
-        <div class="premium-item"><span>Cinematic Landing</span><strong>Toskana hissi</strong></div>
-        <div class="premium-item"><span>Private Cloud Sync</span><strong>Her cihazda aynı arşiv</strong></div>
-        <div class="premium-item"><span>Fast Tasting Flow</span><strong>Hızlı kayıt, temiz detay</strong></div>
-      </div>
-    </div>
 
-    <div class="auth-card cloud-card">
-      <div class="auth-title">Giriş yap veya yeni üye ol</div>
-      <div class="auth-sub">Yeni hesap açtıktan sonra aynı bilgilerle giriş yapıp kendi koleksiyonunu oluşturmaya başlayabilirsin.</div>
-      <div class="cloud-grid" id="cloud-login-grid">
-        <div class="fg">
-          <div class="lbl">E-posta</div>
-          <input type="text" id="auth-email" placeholder="sen@eposta.com" autocomplete="username email">
-        </div>
-        <div class="fg">
-          <div class="lbl">Şifre</div>
-          <input type="password" id="auth-password" placeholder="En az 6 karakter" autocomplete="current-password">
-        </div>
-      </div>
-      <div class="auth-actions" id="login-actions">
-        <button class="save-btn" id="login-btn" type="button" style="margin-top:0">Giriş Yap</button>
-        <button class="fbtn" id="signup-btn" type="button">Üye Ol</button>
-      </div>
-      <div class="auth-hint">Supabase tarafında e-posta doğrulaması açıksa, üyelikten sonra mail kutunu da kontrol et.</div>
-      <div class="cloud-actions" id="post-login-actions">
-        <button class="fbtn secondary-sync" id="sync-btn" type="button">Manuel Eşitle</button>
-        <button class="fbtn" id="logout-btn" type="button">Çıkış Yap</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="tabs">
-  <button class="tbtn on" id="tab-ekle-btn">＋ Yeni Değerlendirme</button>
-  <button class="tbtn" id="tab-kol-btn">Koleksiyonum</button>
 </div>
-
-<div class="panel on" id="panel-ekle">
-  <div class="banner" id="banner">
-    <span class="banner-ico">✓</span>
-    <div class="banner-txt">
-      <div class="banner-name" id="banner-name"></div>
-      <div class="banner-sub">koleksiyona eklendi · form temizlendi</div>
-    </div>
-    <button class="banner-x" id="banner-x">✕</button>
-  </div>
-  <div class="fcard">
-    <div class="ftit">Yeni bir şarap değerlendir</div>
-    <div class="fg2">
-      <div class="fg"><div class="lbl">Şarap Adı *</div><input type="text" id="f-name" placeholder="Örn: Okuzgozu Reserve"></div>
-      <div class="fg"><div class="lbl">Üretici</div><input type="text" id="f-producer" placeholder="Örn: Kavaklidere"></div>
-      <div class="fg">
-        <div class="lbl">Ülke</div>
-        <select id="f-country">
-          <option value="">— Seçiniz —</option>
-          <option>🇹🇷 Türkiye</option><option>🇫🇷 Fransa</option><option>🇮🇹 İtalya</option>
-          <option>🇪🇸 İspanya</option><option>🇵🇹 Portekiz</option><option>🇩🇪 Almanya</option>
-          <option>🇦🇹 Avusturya</option><option>🇬🇷 Yunanistan</option><option>🇦🇷 Arjantin</option>
-          <option>🇨🇱 Şili</option><option>🇺🇸 ABD</option><option>🇿🇦 Güney Afrika</option>
-          <option>🇦🇺 Avustralya</option><option>🇳🇿 Yeni Zelanda</option><option>🇭🇺 Macaristan</option>
-          <option>🇷🇴 Romanya</option><option>🇧🇬 Bulgaristan</option><option>🇬🇪 Gürcistan</option>
-          <option>🇱🇧 Lübnan</option><option>🌍 Diğer</option>
-        </select>
-      </div>
-      <div class="fg">
-        <div class="lbl">Türü</div>
-        <select id="f-type">
-          <option>🍷 Kırmızı</option><option>🥂 Beyaz</option><option>🌹 Rosé</option>
-          <option>🍾 Köpüklü</option><option>🍯 Tatlı</option><option>🍶 Doğal</option>
-        </select>
-      </div>
-      <div class="fg"><div class="lbl">Yılı</div><input type="number" id="f-year" placeholder="2021" min="1900" max="2030"></div>
-      <div class="fg">
-        <div class="lbl">Fiyat</div>
-        <div class="price-wrap"><input type="number" id="f-price" placeholder="18.50" step="0.01" min="0"></div>
-      </div>
-      <div class="fg"><div class="lbl">Alkol %</div><input type="number" id="f-alcohol" placeholder="13.5" step="0.1" min="0" max="25"></div>
-      <div class="fg w2">
-        <div class="lbl">Şişe Fotoğrafı</div>
-        <div class="drop-area" id="drop-area">
-          <input type="file" accept="image/*" id="f-img">
-          <span class="drop-icon">📷</span>
-          <div class="drop-txt">Fotoğraf seç veya sürükle</div>
-        </div>
-        <div class="img-prev" id="img-prev">
-          <img id="img-thumb" src="" alt="">
-          <button class="img-rmv" id="img-rmv" type="button">✕ Kaldır</button>
-        </div>
-      </div>
-      <div class="fg star-section">
-        <div class="lbl" style="margin-bottom:8px">Değerlendirme</div>
-        <div class="star-rows" id="star-rows"></div>
-      </div>
-      <div class="score-box">
-        <div class="score-n" id="score-n">—</div>
-        <div class="score-sub">
-          <div class="score-lbl">Genel Puan / 100</div>
-          <div class="score-desc" id="score-desc"></div>
-        </div>
-      </div>
-      <div class="fg w2"><div class="lbl">Tadım Notları</div><textarea id="f-notes" placeholder="Aroması, yapısı, bitiş süresi..."></textarea></div>
-      <div class="fg w2"><div class="lbl">Yemek Eşleşmesi</div><input type="text" id="f-pairing" placeholder="Örn: Kuzu tandır, Manchego peyniri"></div>
-      <div class="fg w2"><div class="lbl">Nereden Aldım?</div><input type="text" id="f-source" placeholder="Örn: Kav Butik, Duty Free, restoran şarap kavı"></div>
-    </div>
-    <button class="save-btn" id="save-btn" type="button">Kaydet →</button>
-  </div>
-</div>
-
-<div class="panel" id="panel-kol">
-  <div class="toolbar">
-    <button class="fbtn on" data-filter="Tümü" type="button">Tümü</button>
-    <button class="fbtn" data-filter="🍷 Kırmızı" type="button">🍷 Kırmızı</button>
-    <button class="fbtn" data-filter="🥂 Beyaz" type="button">🥂 Beyaz</button>
-    <button class="fbtn" data-filter="🌹 Rosé" type="button">Rosé</button>
-    <button class="fbtn" data-filter="🍾 Köpüklü" type="button">Köpüklü</button>
-    <div class="tr">
-      <input class="srch" type="text" placeholder="Ara…" id="srch">
-      <select class="srt" id="srt">
-        <option value="date">En Yeni</option>
-        <option value="score">En Yüksek Puan</option>
-        <option value="name">İsim A–Z</option>
-        <option value="year">Yıl</option>
-        <option value="price">Fiyat</option>
-      </select>
-      <div class="vtog">
-        <button class="vbtn on" id="vg" type="button">⊞</button>
-        <button class="vbtn" id="vl" type="button">☰</button>
-      </div>
-    </div>
-  </div>
-  <div id="coll"></div>
-</div>
-</div>
-
-<div class="overlay" id="overlay">
-  <div class="modal" id="modal">
-    <button class="mclose" id="mclose" type="button">✕</button>
-    <img class="modal-img" id="m-img" src="" alt="" style="display:none">
-    <div class="modal-body">
-      <div class="m-badge" id="m-badge"></div>
-      <div class="m-name" id="m-name"></div>
-      <div class="m-prod" id="m-prod"></div>
-      <div class="m-scorebox">
-        <div class="m-score-big" id="m-score-big">—</div>
-        <div>
-          <div class="m-score-stars" id="m-score-stars"></div>
-          <div class="m-score-lbl">Genel Puan / 100</div>
-        </div>
-      </div>
-      <div class="m-cats" id="m-cats"></div>
-      <div class="m-chips" id="m-chips"></div>
-      <div id="m-notes-wrap" class="m-sec" style="display:none">
-        <div class="m-sec-lbl">Tadım Notları</div>
-        <div class="m-sec-val" id="m-notes"></div>
-      </div>
-      <div id="m-pairing-wrap" class="m-sec" style="display:none">
-        <div class="m-sec-lbl">Yemek Eşleşmesi</div>
-        <div class="m-sec-val" id="m-pairing"></div>
-      </div>
-      <div id="m-source-wrap" class="m-sec" style="display:none">
-        <div class="m-sec-lbl">Nereden Aldım?</div>
-        <div class="m-sec-val" id="m-source"></div>
-      </div>
-      <div class="m-actions">
-        <button class="m-edit" id="m-edit" type="button">✎ Düzenle</button>
-        <button class="m-del" id="m-del" type="button" style="margin-top:0;flex:1">🗑 Bu şarabı sil</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
 
 <script>
-var wines = [];
-var ratings = {gorunum:0,koku:0,tat:0,denge:0};
-var curImg = null;
-var curFilter = 'Tümü';
-var curSort = 'date';
-var curSearch = '';
-var curView = 'grid';
-var editingWineId = null;
-var bannerTimer = null;
-var toastTimer = null;
+const supabase = window.supabase.createClient(
+  "https://npizujvzydrycbhebaoo.supabase.co",
+  "ANON_KEY_BURAYA"
+);
 
-var HARDCODED_SUPABASE_URL = 'https://npizujvzydrycbhebaoo.supabase.co';
-var HARDCODED_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5waXp1anZ6eWRyeWNiaGViYW9vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzODcyNjQsImV4cCI6MjA4OTk2MzI2NH0.fpdqqjQvWG3yuk5pf2yiJOGsoYZKXiQ6UYes1EoWSvU';
+async function login(){
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
 
-var sbConfig = {
-  url: HARDCODED_SUPABASE_URL,
-  key: HARDCODED_SUPABASE_ANON_KEY
-};
-var sb = null;
-var currentUser = null;
-
-var catDefs = [
-  {k:'gorunum',l:'Görünüm'},
-  {k:'koku',l:'Koku'},
-  {k:'tat',l:'Tat'},
-  {k:'denge',l:'Denge'}
-];
-
-catDefs.forEach(function(c) {
-  var row = document.createElement('div');
-  row.className = 'star-row';
-  var lbl = document.createElement('span');
-  lbl.className = 'srl';
-  lbl.textContent = c.l;
-  row.appendChild(lbl);
-  var wrap = document.createElement('div');
-  wrap.className = 'stars';
-  wrap.id = 'sr-' + c.k;
-  for (var i = 1; i <= 5; i++) {
-    (function(v, cat) {
-      var s = document.createElement('span');
-      s.className = 'star';
-      s.textContent = '★';
-      s.addEventListener('click', function() { setStars(cat, v); });
-      wrap.appendChild(s);
-    })(i, c.k);
-  }
-  row.appendChild(wrap);
-  document.getElementById('star-rows').appendChild(row);
-});
-
-function setStars(cat, val) {
-  ratings[cat] = val;
-  var stars = document.getElementById('sr-' + cat).querySelectorAll('.star');
-  for (var i = 0; i < stars.length; i++) {
-    if (i < val) stars[i].classList.add('on');
-    else stars[i].classList.remove('on');
-  }
-  recalcScore();
-}
-
-function recalcScore() {
-  var vals = [];
-  for (var k in ratings) { if (ratings[k] > 0) vals.push(ratings[k]); }
-  if (!vals.length) {
-    document.getElementById('score-n').textContent = '—';
-    document.getElementById('score-desc').textContent = '';
-    return 0;
-  }
-  var sum = 0; for (var i = 0; i < vals.length; i++) sum += vals[i];
-  var avg = sum / vals.length;
-  var score = Math.round(avg * 20);
-  document.getElementById('score-n').textContent = score;
-  var descs = ['','Zayıf','Ortalama','İçimlik','Çok İyi','Mükemmel!'];
-  document.getElementById('score-desc').textContent = descs[Math.round(avg)] || '';
-  return score;
-}
-
-document.getElementById('f-img').addEventListener('change', function() {
-  if (this.files && this.files[0]) readImg(this.files[0]);
-});
-document.getElementById('drop-area').addEventListener('dragover', function(e) {
-  e.preventDefault(); this.classList.add('drag');
-});
-document.getElementById('drop-area').addEventListener('dragleave', function() {
-  this.classList.remove('drag');
-});
-document.getElementById('drop-area').addEventListener('drop', function(e) {
-  e.preventDefault(); this.classList.remove('drag');
-  if (e.dataTransfer.files[0]) readImg(e.dataTransfer.files[0]);
-});
-document.getElementById('img-rmv').addEventListener('click', function(e) {
-  e.stopPropagation(); clearImg();
-});
-
-function readImg(file) {
-  if (!file.type.startsWith('image/')) return;
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    curImg = e.target.result;
-    document.getElementById('img-thumb').src = curImg;
-    document.getElementById('img-prev').style.display = 'block';
-  };
-  reader.readAsDataURL(file);
-}
-
-function clearImg() {
-  curImg = null;
-  document.getElementById('img-prev').style.display = 'none';
-  document.getElementById('img-thumb').src = '';
-  document.getElementById('f-img').value = '';
-}
-
-function requireAuth() {
-  if (!isCloudReady()) {
-    showToast('Önce giriş yap', '');
-    switchTab('ozet');
-    return false;
-  }
-  return true;
-}
-
-document.getElementById('save-btn').addEventListener('click', async function() {
-  if (!requireAuth()) return;
-
-  var name = document.getElementById('f-name').value.trim();
-  if (!name) { showToast('⚠ Şarap adı zorunlu!', ''); return; }
-
-  var ratCopy = {};
-  for (var k in ratings) ratCopy[k] = ratings[k];
-
-  var baseId = editingWineId || String(Date.now());
-
-  var wine = normalizeWine({
-    id: baseId,
-    app_id: baseId,
-    name: name,
-    producer: document.getElementById('f-producer').value.trim(),
-    country: document.getElementById('f-country').value,
-    type: document.getElementById('f-type').value,
-    year: document.getElementById('f-year').value,
-    price: document.getElementById('f-price').value,
-    alcohol: document.getElementById('f-alcohol').value,
-    notes: document.getElementById('f-notes').value.trim(),
-    pairing: document.getElementById('f-pairing').value.trim(),
-    source: document.getElementById('f-source').value.trim(),
-    ratings: ratCopy,
-    score: recalcScore(),
-    image: curImg,
-    date: new Date().toLocaleDateString('tr-TR')
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password
   });
 
-  if (editingWineId) {
-    wines = wines.map(function(item) {
-      return String(item.app_id || item.id) === String(editingWineId) ? wine : normalizeWine(item);
-    });
-  } else {
-    wines.unshift(wine);
-  }
-
-  persist();
-  await saveWineToCloud(wine);
-
-  var savedName = wine.name;
-  var wasEdit = !!editingWineId;
-  resetForm();
-  updateStats();
-  renderWines();
-  renderDashboard();
-
-  document.getElementById('banner-name').textContent = savedName;
-  var banner = document.getElementById('banner');
-  banner.classList.add('on');
-  clearTimeout(bannerTimer);
-  bannerTimer = setTimeout(function() { banner.classList.remove('on'); }, 5000);
-
-  var btn = document.getElementById('save-btn');
-  btn.textContent = wasEdit ? '✓ Güncellendi' : '✓ Kaydedildi';
-  btn.classList.add('saved');
-  setTimeout(function() {
-    btn.textContent = 'Kaydet →';
-    btn.classList.remove('saved');
-  }, 2500);
-});
-
-document.getElementById('banner-x').addEventListener('click', function() {
-  document.getElementById('banner').classList.remove('on');
-});
-
-function resetForm() {
-  document.getElementById('f-name').value = '';
-  document.getElementById('f-producer').value = '';
-  document.getElementById('f-country').selectedIndex = 0;
-  document.getElementById('f-type').selectedIndex = 0;
-  document.getElementById('f-year').value = '';
-  document.getElementById('f-price').value = '';
-  document.getElementById('f-alcohol').value = '';
-  document.getElementById('f-notes').value = '';
-  document.getElementById('f-pairing').value = '';
-  document.getElementById('f-source').value = '';
-  for (var k in ratings) ratings[k] = 0;
-  catDefs.forEach(function(c) {
-    var stars = document.getElementById('sr-' + c.k).querySelectorAll('.star');
-    for (var i = 0; i < stars.length; i++) stars[i].classList.remove('on');
-  });
-  document.getElementById('score-n').textContent = '—';
-  document.getElementById('score-desc').textContent = '';
-  editingWineId = null;
-  document.getElementById('save-btn').textContent = 'Kaydet →';
-  clearImg();
-}
-
-function switchTab(tab) {
-  var map = {
-    ekle: {panel:'panel-ekle', btn:'tab-ekle-btn'},
-    kol: {panel:'panel-kol', btn:'tab-kol-btn'}
-  };
-  ['panel-ekle','panel-kol'].forEach(function(id){
-    document.getElementById(id).classList.remove('on');
-  });
-  ['tab-ekle-btn','tab-kol-btn'].forEach(function(id){
-    document.getElementById(id).classList.remove('on');
-  });
-  document.getElementById(map[tab].panel).classList.add('on');
-  document.getElementById(map[tab].btn).classList.add('on');
-  if (tab === 'kol') renderWines();
-}
-document.getElementById('tab-ekle-btn').addEventListener('click', function(){ switchTab('ekle'); });
-document.getElementById('tab-kol-btn').addEventListener('click', function(){ switchTab('kol'); });
-
-document.querySelectorAll('.fbtn').forEach(function(btn) {
-  if (btn.dataset.filter) {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.fbtn[data-filter]').forEach(function(b) { b.classList.remove('on'); });
-      this.classList.add('on');
-      curFilter = this.dataset.filter;
-      renderWines();
-    });
-  }
-});
-document.getElementById('srt').addEventListener('change', function() { curSort = this.value; renderWines(); });
-document.getElementById('srch').addEventListener('input', function() { curSearch = this.value; renderWines(); });
-document.getElementById('vg').addEventListener('click', function() {
-  curView = 'grid';
-  this.classList.add('on'); document.getElementById('vl').classList.remove('on');
-  renderWines();
-});
-document.getElementById('vl').addEventListener('click', function() {
-  curView = 'list';
-  this.classList.add('on'); document.getElementById('vg').classList.remove('on');
-  renderWines();
-});
-
-function s5(score) {
-  var n = score ? Math.round(score / 20) : 0;
-  return '★'.repeat(n) + '☆'.repeat(5 - n);
-}
-
-function getList() {
-  return wines.filter(function(w) {
-    var mt = curFilter === 'Tümü' || w.type === curFilter;
-    var q = curSearch.toLowerCase();
-    var ms = !q || w.name.toLowerCase().indexOf(q) > -1 ||
-      (w.producer || '').toLowerCase().indexOf(q) > -1 ||
-      (w.country || '').toLowerCase().indexOf(q) > -1;
-    return mt && ms;
-  }).sort(function(a, b) {
-    if (curSort === 'date') return String(b.app_id || b.id).localeCompare(String(a.app_id || a.id), 'tr', {numeric:true});
-    if (curSort === 'score') return (b.score || 0) - (a.score || 0);
-    if (curSort === 'name') return a.name.localeCompare(b.name, 'tr');
-    if (curSort === 'year') return (b.year || 0) - (a.year || 0);
-    if (curSort === 'price') return (parseFloat(b.price) || 0) - (parseFloat(a.price) || 0);
-    return 0;
-  });
-}
-
-function renderWines() {
-  var coll = document.getElementById('coll');
-  var list = getList();
-  if (!list.length) {
-    var msg = wines.length ? 'Filtreye uyan şarap bulunamadı.' : 'Henüz bir şarap eklemediniz.';
-    coll.innerHTML = '<div class="empty"><div class="empty-ico">🍷</div><h3>Koleksiyon boş</h3><p>' + msg + '</p></div>';
-    return;
-  }
-
-  var html = '';
-  if (curView === 'grid') {
-    html = '<div class="wine-grid">';
-    list.forEach(function(w) {
-      var badge = [w.type, w.country, w.year].filter(Boolean).join(' · ');
-      html += '<div class="wcard" data-id="' + (w.app_id || w.id) + '">';
-      html += '<button class="del-btn" data-del="' + (w.app_id || w.id) + '" type="button">✕</button>';
-      if (w.image) html += '<img class="wcard-img" src="' + w.image + '" alt="">';
-      html += '<div class="wcard-body">';
-      html += '<div class="wcard-badge">' + badge + '</div>';
-      html += '<div class="wcard-name">' + w.name + '</div>';
-      html += '<div class="wcard-prod">' + (w.producer || '') + '</div>';
-      if (w.notes) html += '<div class="wcard-notes">' + w.notes + '</div>';
-      html += '<div class="wcard-foot">';
-      html += '<div><div class="wcard-score">' + (w.score || '—') + '<span>/100</span></div>';
-      html += '<div class="wcard-stars">' + s5(w.score) + '</div></div>';
-      html += '<div style="text-align:right">';
-      if (w.price) html += '<div class="wcard-price">€' + parseFloat(w.price).toFixed(2) + '</div>';
-      html += '<div class="wcard-date">' + (w.date || '') + '</div>';
-      html += '</div></div></div></div>';
-    });
-    html += '</div>';
-  } else {
-    html = '<div class="wine-list">';
-    list.forEach(function(w) {
-      html += '<div class="wrow" data-id="' + (w.app_id || w.id) + '">';
-      if (w.image) html += '<img class="wrow-thumb" src="' + w.image + '" alt="">';
-      else html += '<div class="wrow-ph">' + (w.type || '🍷').split(' ')[0] + '</div>';
-      html += '<div class="wrow-body"><div class="wrow-name">' + w.name + '</div>';
-      html += '<div class="wrow-meta">' + [w.country, w.type, w.year].filter(Boolean).join(' · ') + '</div></div>';
-      html += '<div class="wrow-right">';
-      html += '<div class="wrow-score">' + (w.score || '—') + '<span>/100</span></div>';
-      if (w.price) html += '<div class="wrow-price">€' + parseFloat(w.price).toFixed(2) + '</div>';
-      html += '<button class="wrow-del" data-del="' + (w.app_id || w.id) + '" type="button">✕</button>';
-      html += '</div></div>';
-    });
-    html += '</div>';
-  }
-  coll.innerHTML = html;
-
-  coll.onclick = function(e) {
-    var delEl = e.target.closest('[data-del]');
-    if (delEl) {
-      e.stopPropagation();
-      var id = delEl.dataset.del;
-      var card = delEl.closest('.wcard, .wrow');
-      if (card) {
-        card.classList.add('bye');
-        setTimeout(function() { doDelete(id); }, 260);
-      } else {
-        doDelete(id);
-      }
-      return;
-    }
-    var card = e.target.closest('[data-id]');
-    if (card) openModal(card.dataset.id);
-  };
-}
-
-async function doDelete(id) {
-  if (!requireAuth()) return;
-  wines = wines.filter(function(w) { return String(w.app_id || w.id) !== String(id); });
-  persist(); renderWines(); updateStats(); renderDashboard();
-  if (isCloudReady()) await deleteWineFromCloud(id);
-  showToast('Silindi', 'ok');
-}
-
-function openModal(id) {
-  var w = wines.find(function(x) { return String(x.app_id || x.id) === String(id); });
-  if (!w) return;
-
-  var mi = document.getElementById('m-img');
-  if (w.image) { mi.src = w.image; mi.style.display = 'block'; }
-  else { mi.style.display = 'none'; mi.src = ''; }
-
-  document.getElementById('m-badge').textContent = [w.type, w.country, w.year].filter(Boolean).join(' · ');
-  document.getElementById('m-name').textContent = w.name;
-  document.getElementById('m-prod').textContent = w.producer || '';
-  document.getElementById('m-score-big').textContent = w.score || '—';
-  document.getElementById('m-score-stars').textContent = s5(w.score);
-
-  var catsHtml = '';
-  catDefs.forEach(function(c) {
-    var v = (w.ratings && w.ratings[c.k]) ? w.ratings[c.k] : 0;
-    catsHtml += '<div class="m-cat"><div class="m-cat-lbl">' + c.l + '</div>';
-    catsHtml += '<div class="m-cat-stars">' + (v ? '★'.repeat(v) + '☆'.repeat(5 - v) : '☆☆☆☆☆') + '</div></div>';
-  });
-  document.getElementById('m-cats').innerHTML = catsHtml;
-
-  var chips = '';
-  if (w.price) chips += '<div class="m-chip"><div class="m-chip-val">€' + parseFloat(w.price).toFixed(2) + '</div><div class="m-chip-lbl">Fiyat</div></div>';
-  if (w.alcohol) chips += '<div class="m-chip"><div class="m-chip-val">%' + w.alcohol + '</div><div class="m-chip-lbl">Alkol</div></div>';
-  if (w.date) chips += '<div class="m-chip"><div class="m-chip-val">' + w.date + '</div><div class="m-chip-lbl">Tarih</div></div>';
-  document.getElementById('m-chips').innerHTML = chips;
-
-  var nw = document.getElementById('m-notes-wrap');
-  var pw = document.getElementById('m-pairing-wrap');
-  if (w.notes) { document.getElementById('m-notes').textContent = w.notes; nw.style.display = 'block'; }
-  else nw.style.display = 'none';
-  if (w.pairing) { document.getElementById('m-pairing').textContent = w.pairing; pw.style.display = 'block'; }
-  else pw.style.display = 'none';
-  var swrap = document.getElementById('m-source-wrap');
-  if (w.source) { document.getElementById('m-source').textContent = w.source; swrap.style.display = 'block'; }
-  else swrap.style.display = 'none';
-
-  document.getElementById('m-edit').onclick = function() {
-    populateFormForEdit(id);
-    closeModal();
-  };
-
-  document.getElementById('m-del').onclick = async function() {
-    closeModal();
-    await doDelete(id);
-  };
-
-  document.getElementById('overlay').classList.add('on');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeModal() {
-  document.getElementById('overlay').classList.remove('on');
-  document.body.style.overflow = '';
-}
-
-function populateFormForEdit(id) {
-  if (!requireAuth()) return;
-  var w = wines.find(function(x) { return String(x.app_id || x.id) === String(id); });
-  if (!w) return;
-  editingWineId = String(w.app_id || w.id);
-  document.getElementById('f-name').value = w.name || '';
-  document.getElementById('f-producer').value = w.producer || '';
-  document.getElementById('f-country').value = w.country || '';
-  document.getElementById('f-type').value = w.type || '🍷 Kırmızı';
-  document.getElementById('f-year').value = w.year || '';
-  document.getElementById('f-price').value = w.price || '';
-  document.getElementById('f-alcohol').value = w.alcohol || '';
-  document.getElementById('f-notes').value = w.notes || '';
-  document.getElementById('f-pairing').value = w.pairing || '';
-  document.getElementById('f-source').value = w.source || '';
-  curImg = w.image || null;
-  if (curImg) {
-    document.getElementById('img-thumb').src = curImg;
-    document.getElementById('img-prev').style.display = 'block';
-  } else {
-    clearImg();
-  }
-  for (var k in ratings) ratings[k] = (w.ratings && w.ratings[k]) ? w.ratings[k] : 0;
-  catDefs.forEach(function(c) { setStars(c.k, ratings[c.k] || 0); });
-  recalcScore();
-  document.getElementById('save-btn').textContent = 'Güncelle →';
-  switchTab('ekle');
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-
-function renderDashboard() { return; }
-
-document.getElementById('mclose').addEventListener('click', closeModal);
-document.getElementById('overlay').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
-window.addEventListener('popstate', closeModal);
-
-function updateStats() {
-  document.getElementById('st-n').textContent = wines.length;
-  var scored = wines.filter(function(w) { return w.score > 0; });
-  if (!scored.length) {
-    document.getElementById('st-a').textContent = '—';
-    document.getElementById('st-b').textContent = '—';
-    return;
-  }
-  var sum = 0;
-  for (var i = 0; i < scored.length; i++) sum += scored[i].score;
-  document.getElementById('st-a').textContent = Math.round(sum / scored.length);
-  var best = 0;
-  for (var i = 0; i < scored.length; i++) if (scored[i].score > best) best = scored[i].score;
-  document.getElementById('st-b').textContent = best;
-}
-
-function showToast(msg, type) {
-  var t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast on' + (type ? ' ' + type : '');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(function() { t.className = 'toast'; }, 2400);
-}
-
-function normalizeWine(w) {
-  var id = w.id || w.app_id || Date.now();
-  return {
-    id: String(id),
-    app_id: String(w.app_id || id),
-    name: w.name || '',
-    producer: w.producer || '',
-    country: w.country || '',
-    type: w.type || '🍷 Kırmızı',
-    year: w.year || '',
-    price: w.price || '',
-    alcohol: w.alcohol || '',
-    notes: w.notes || '',
-    pairing: w.pairing || '',
-    source: w.source || '',
-    ratings: w.ratings || {gorunum:0,koku:0,tat:0,denge:0},
-    score: w.score || 0,
-    image: w.image || '',
-    date: w.date || '',
-    created_at: w.created_at || null
-  };
-}
-
-function persist() {
-  localStorage.setItem('sd4', JSON.stringify(wines.map(function(w){ return normalizeWine(w); })));
-}
-
-function loadPersistedWines() {
-  try {
-    wines = JSON.parse(localStorage.getItem('sd4') || '[]').map(normalizeWine);
-  } catch (e) {
-    wines = [];
+  if(error){
+    alert("Giriş başarısız");
+  }else{
+    alert("Giriş başarılı");
+    location.reload();
   }
 }
-
-function clearLocalWineState() {
-  wines = [];
-  localStorage.removeItem('sd4');
-  renderWines();
-  updateStats();
-  renderDashboard();
-  closeModal();
-  resetForm();
-}
-
-function initSupabaseClient() {
-  if (!sbConfig.url || !sbConfig.key || !window.supabase || !window.supabase.createClient) {
-    sb = null;
-    updateCloudUi();
-    return false;
-  }
-  try {
-    sb = window.supabase.createClient(sbConfig.url, sbConfig.key);
-    return true;
-  } catch (e) {
-    sb = null;
-    updateCloudUi();
-    return false;
-  }
-}
-
-function isCloudReady() {
-  return !!(sb && currentUser);
-}
-
-function updateCloudUi(msg) {
-  var status = document.getElementById('cloud-status-header');
-  var modeBadge = document.getElementById('cloud-mode-badge');
-  var authBadge = document.getElementById('cloud-auth-badge');
-  var miniActions = document.getElementById('post-login-actions-mini');
-
-  if (isCloudReady()) {
-    document.body.classList.add('logged-in');
-    status.textContent = msg || currentUser.email;
-    modeBadge.textContent = 'Bulut';
-    authBadge.textContent = 'Giriş yapıldı';
-    if (miniActions) miniActions.style.display = 'flex';
-  } else if (sb) {
-    document.body.classList.remove('logged-in');
-    status.textContent = msg || 'Çıkış yapıldı';
-    modeBadge.textContent = 'Bulut';
-    authBadge.textContent = 'Çıkış yapıldı';
-    if (miniActions) miniActions.style.display = 'none';
-  } else {
-    document.body.classList.remove('logged-in');
-    status.textContent = msg || 'Yerel mod · sadece bu cihazda kayıtlı';
-    modeBadge.textContent = 'Yerel';
-    authBadge.textContent = 'Çıkış yapıldı';
-    if (miniActions) miniActions.style.display = 'none';
-  }
-}
-
-async function hydrateSession() {
-  if (!sb) {
-    updateCloudUi('Bulut ayarları koda gömülü değil');
-    clearLocalWineState();
-    return;
-  }
-
-  var result = await sb.auth.getSession();
-  currentUser = result && result.data && result.data.session ? result.data.session.user : null;
-
-  if (currentUser) {
-    loadPersistedWines();
-    updateCloudUi();
-    renderWines();
-    updateStats();
-    renderDashboard();
-    await loadCloudWines();
-    await syncAllToCloud(false);
-  } else {
-    clearLocalWineState();
-    updateCloudUi('Çıkış yapıldı');
-  }
-}
-
-function stripUnsupportedFields(obj, fields) {
-  var clone = {};
-  Object.keys(obj).forEach(function(k) {
-    if (fields.indexOf(k) === -1) clone[k] = obj[k];
-  });
-  return clone;
-}
-
-async function upsertWinePayload(payload) {
-  var attempts = [
-    payload,
-    stripUnsupportedFields(payload, ['source_place']),
-    stripUnsupportedFields(payload, ['source_place', 'tasted_at']),
-    stripUnsupportedFields(payload, ['source_place', 'tasted_at', 'image']),
-    stripUnsupportedFields(payload, ['source_place', 'tasted_at', 'image', 'ratings'])
-  ];
-  var lastResult = null;
-  for (var i = 0; i < attempts.length; i++) {
-    lastResult = await sb.from('wines').upsert(attempts[i], { onConflict: 'app_id' });
-    if (!lastResult.error) return lastResult;
-  }
-  return lastResult;
-}
-
-async function bulkUpsertWinePayloads(payloads) {
-  for (var i = 0; i < payloads.length; i++) {
-    var result = await upsertWinePayload(payloads[i]);
-    if (result.error) return result;
-  }
-  return { error: null };
-}
-
-function cloudRowFromWine(wine) {
-  var n = normalizeWine(wine);
-  return {
-    user_id: currentUser.id,
-    app_id: String(n.app_id || n.id),
-    name: n.name,
-    producer: n.producer || null,
-    country: n.country || null,
-    type: n.type || null,
-    year: n.year ? Number(n.year) : null,
-    price: n.price !== '' ? Number(n.price) : null,
-    alcohol: n.alcohol !== '' ? Number(n.alcohol) : null,
-    notes: n.notes || null,
-    pairing: n.pairing || null,
-    source_place: n.source || null,
-    ratings: n.ratings || {},
-    score: n.score || 0,
-    image: n.image || null,
-    tasted_at: n.date || null
-  };
-}
-
-async function saveWineToCloud(wine) {
-  if (!isCloudReady()) return;
-  var payload = cloudRowFromWine(wine);
-  var result = await upsertWinePayload(payload);
-  if (result.error) {
-    console.error(result.error);
-    updateCloudUi('Bulut bağlı · son kayıt yüklenemedi');
-    showToast('Buluta kayıt giderken hata oldu: ' + (result.error.message || 'bilinmeyen hata'), '');
-    return;
-  }
-  updateCloudUi('Bulut bağlı · kayıt eşitlendi');
-}
-
-async function deleteWineFromCloud(appId) {
-  if (!isCloudReady()) return;
-  var result = await sb.from('wines').delete().eq('app_id', String(appId)).eq('user_id', currentUser.id);
-  if (result.error) {
-    console.error(result.error);
-    showToast('Buluttan silme başarısız', '');
-  }
-}
-
-async function loadCloudWines() {
-  if (!isCloudReady()) return;
-  var result = await sb.from('wines').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
-  if (result.error) {
-    console.error(result.error);
-    showToast('Buluttaki kayıtlar alınamadı', '');
-    return;
-  }
-  var localMap = {};
-  wines.forEach(function(w) { localMap[String(w.app_id || w.id)] = normalizeWine(w); });
-  result.data.forEach(function(row) {
-    var mapped = normalizeWine({
-      id: row.app_id,
-      app_id: row.app_id,
-      name: row.name,
-      producer: row.producer,
-      country: row.country,
-      type: row.type,
-      year: row.year,
-      price: row.price,
-      alcohol: row.alcohol,
-      notes: row.notes,
-      pairing: row.pairing,
-      source: row.source_place,
-      ratings: row.ratings,
-      score: row.score,
-      image: row.image,
-      date: row.tasted_at,
-      created_at: row.created_at
-    });
-    localMap[String(mapped.app_id || mapped.id)] = mapped;
-  });
-  wines = Object.keys(localMap).map(function(k){ return localMap[k]; }).sort(function(a,b){
-    return String(b.app_id || b.id).localeCompare(String(a.app_id || a.id), 'tr', {numeric:true});
-  });
-  persist();
-  renderWines();
-  updateStats();
-  renderDashboard();
-  updateCloudUi('Bulut bağlı · kayıtlar yüklendi');
-}
-
-async function autoRefreshFromCloud() {
-  if (!isCloudReady()) return;
-  await loadCloudWines();
-}
-
-async function syncAllToCloud(showOkToast) {
-  if (!isCloudReady()) {
-    if (showOkToast !== false) showToast('Önce giriş yap', '');
-    return;
-  }
-  if (!wines.length) {
-    if (showOkToast !== false) showToast('Senkronize edilecek kayıt yok', '');
-    return;
-  }
-  var payload = wines.map(cloudRowFromWine);
-  var result = await bulkUpsertWinePayloads(payload);
-  if (result.error) {
-    console.error(result.error);
-    showToast('Toplu senkronizasyon başarısız: ' + (result.error && result.error.message ? result.error.message : 'bilinmeyen hata'), '');
-    return;
-  }
-  updateCloudUi('Bulut bağlı · tüm kayıtlar eşitlendi');
-  if (showOkToast !== false) showToast('Tüm kayıtlar buluta gitti', 'ok');
-}
-
-async function loginToCloud() {
-  if (!sb && !initSupabaseClient()) {
-    showToast('Supabase bilgileri koda sabitlenmemiş', '');
-    return;
-  }
-  var email = document.getElementById('auth-email').value.trim();
-  var password = document.getElementById('auth-password').value.trim();
-  if (!email || !password) {
-    showToast('E-posta ve şifre gerekli', '');
-    return;
-  }
-  var result = await sb.auth.signInWithPassword({ email: email, password: password });
-  if (result.error) {
-    console.error(result.error);
-    showToast('Giriş başarısız', '');
-    updateCloudUi('Giriş başarısız');
-    return;
-  }
-  currentUser = result.data.user;
-  loadPersistedWines();
-  updateCloudUi('Bulut bağlı · giriş yapıldı');
-  await syncAllToCloud(false);
-  await loadCloudWines();
-  switchTab('kol');
-  showToast('Giriş yaptın', 'ok');
-}
-
-async function signUpToCloud() {
-  if (!sb && !initSupabaseClient()) {
-    showToast('Supabase bağlantısı hazır değil', '');
-    return;
-  }
-  var email = document.getElementById('auth-email').value.trim();
-  var password = document.getElementById('auth-password').value.trim();
-  if (!email || !password) {
-    showToast('E-posta ve şifre gerekli', '');
-    return;
-  }
-  if (password.length < 6) {
-    showToast('Şifre en az 6 karakter olmalı', '');
-    return;
-  }
-  var result = await sb.auth.signUp({ email: email, password: password });
-  if (result.error) {
-    console.error(result.error);
-    showToast(result.error.message || 'Üyelik başarısız', '');
-    return;
-  }
-  if (result.data && result.data.session && result.data.user) {
-    currentUser = result.data.user;
-    loadPersistedWines();
-    updateCloudUi('Hesap açıldı · giriş yapıldı');
-    await loadCloudWines();
-    switchTab('kol');
-    showToast('Hesap oluşturuldu', 'ok');
-    return;
-  }
-  showToast('Üyelik oluşturuldu. Gerekirse e-postanı doğrula, sonra giriş yap.', 'ok');
-}
-
-async function logoutFromCloud() {
-  if (sb) {
-    var result = await sb.auth.signOut({ scope: 'local' });
-    if (result && result.error) {
-      console.error(result.error);
-    }
-  }
-  currentUser = null;
-  document.getElementById('auth-password').value = '';
-  clearLocalWineState();
-  updateCloudUi('Çıkış yapıldı');
-  showToast('Çıkış yapıldı', 'ok');
-}
-
-document.getElementById('login-btn').addEventListener('click', loginToCloud);
-document.getElementById('signup-btn').addEventListener('click', signUpToCloud);
-document.getElementById('hero-login-btn').addEventListener('click', function(){ document.getElementById('auth-email').focus(); });
-document.getElementById('hero-signup-btn').addEventListener('click', function(){ document.getElementById('auth-email').focus(); });
-document.getElementById('logout-btn').addEventListener('click', logoutFromCloud);
-document.getElementById('logout-btn-mini').addEventListener('click', logoutFromCloud);
-document.getElementById('sync-btn').addEventListener('click', function(){ syncAllToCloud(true); });
-document.getElementById('sync-btn-mini').addEventListener('click', function(){ syncAllToCloud(true); });
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('./sw.js').catch(function(err){ console.log('SW yok', err); });
-  });
-}
-
-initSupabaseClient();
-
-if (sb && sb.auth && sb.auth.onAuthStateChange) {
-  sb.auth.onAuthStateChange(function(event, session) {
-    currentUser = session && session.user ? session.user : null;
-    updateCloudUi();
-    if (currentUser) {
-      loadCloudWines();
-    } else {
-      clearLocalWineState();
-    }
-  });
-}
-
-document.addEventListener('visibilitychange', function() {
-  if (!document.hidden) autoRefreshFromCloud();
-});
-setInterval(function() {
-  autoRefreshFromCloud();
-}, 60000);
-
-hydrateSession();
-updateStats();
-renderWines();
-renderDashboard();
 </script>
+
 </body>
 </html>
