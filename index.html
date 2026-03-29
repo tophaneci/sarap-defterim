@@ -266,11 +266,6 @@ url("https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fi
 .auth-sub{margin-bottom:18px}
 .auth-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
 .auth-hint{margin-top:12px;font-size:.68rem;line-height:1.7;color:var(--mut)}
-.auth-actions .save-btn{margin-top:0}
-.auth-actions .fbtn,.auth-actions .save-btn{flex:1;justify-content:center;text-align:center}
-.hero-side{min-width:0}
-.hero-copy > .hero-sub + .hero-sub{margin-top:8px}
-
 body.logged-in .hero-landing,body.logged-in .auth-card{display:none}
 body:not(.logged-in) .tabs{display:none}
 body:not(.logged-in) .cloud-mini-actions{display:none !important}
@@ -326,7 +321,7 @@ body.logged-in .cloud-card{display:none}
   <div class="hero-visual">
     <div class="hero-copy">
       <div class="hero-title">İçtiğin şarapları kaydet.</div>
-      <div class="hero-sub">Kendi koleksiyonunu oluştur. Beğendiklerini kolayca tekrar bul.</div>
+      <div class="hero-sub">Beğendiklerini kolayca tekrar bul. Kendi koleksiyonunu oluştur.</div>
       <div class="hero-sub">Hepsini tek yerde tut, not al ve istediğin zaman kolayca geri dön.</div>
     </div>
   </div>
@@ -529,6 +524,7 @@ var sbConfig = {
 };
 var sb = null;
 var currentUser = null;
+
 
 var catDefs = [
   {k:'gorunum',l:'Görünüm'},
@@ -1063,7 +1059,7 @@ function updateCloudUi(msg) {
   }
 }
 
-async async function hydrateSession() {
+async function hydrateSession() {
   if (!sb) {
     updateCloudUi('Uygulama ayarları eksik');
     clearLocalWineState();
@@ -1304,14 +1300,29 @@ async function logoutFromCloud() {
   showToast('Çıkış yapıldı', 'ok');
 }
 
-document.getElementById('login-btn').addEventListener('click', loginToCloud);
-document.getElementById('signup-btn').addEventListener('click', signUpToCloud);
-document.getElementById('hero-login-btn').addEventListener('click', function(){ document.getElementById('auth-email').focus(); });
-document.getElementById('hero-signup-btn').addEventListener('click', function(){ document.getElementById('auth-email').focus(); });
-document.getElementById('logout-btn').addEventListener('click', logoutFromCloud);
-document.getElementById('logout-btn-mini').addEventListener('click', logoutFromCloud);
-document.getElementById('sync-btn').addEventListener('click', function(){ syncAllToCloud(true); });
-document.getElementById('sync-btn-mini').addEventListener('click', function(){ syncAllToCloud(true); });
+var loginBtn = document.getElementById('login-btn');
+if (loginBtn) loginBtn.addEventListener('click', loginToCloud);
+
+var signupBtn = document.getElementById('signup-btn');
+if (signupBtn) signupBtn.addEventListener('click', signUpToCloud);
+
+var heroLoginBtn = document.getElementById('hero-login-btn');
+if (heroLoginBtn) heroLoginBtn.addEventListener('click', function(){ document.getElementById('auth-email').focus(); });
+
+var heroSignupBtn = document.getElementById('hero-signup-btn');
+if (heroSignupBtn) heroSignupBtn.addEventListener('click', function(){ document.getElementById('auth-email').focus(); });
+
+var logoutBtn = document.getElementById('logout-btn');
+if (logoutBtn) logoutBtn.addEventListener('click', logoutFromCloud);
+
+var logoutBtnMini = document.getElementById('logout-btn-mini');
+if (logoutBtnMini) logoutBtnMini.addEventListener('click', logoutFromCloud);
+
+var syncBtn = document.getElementById('sync-btn');
+if (syncBtn) syncBtn.addEventListener('click', function(){ syncAllToCloud(true); });
+
+var syncBtnMini = document.getElementById('sync-btn-mini');
+if (syncBtnMini) syncBtnMini.addEventListener('click', function(){ syncAllToCloud(true); });
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
