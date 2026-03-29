@@ -217,6 +217,27 @@ body:not(.logged-in) #post-login-actions{display:none}
 body.logged-in #cloud-settings-wrap{display:none}
 body:not(.logged-in) #tab-ekle-btn,
 body:not(.logged-in) #tab-kol-btn{display:none}
+body:not(.logged-in) #panel-ekle,
+body:not(.logged-in) #panel-kol{display:none !important}
+.account-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:10px}
+.account-pill{border:1px solid var(--bord);padding:6px 10px;font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);border-radius:1px;background:var(--surf2)}
+.account-text{font-size:.62rem;letter-spacing:.08em;color:var(--mut);text-align:right}
+.hero-landing{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;margin-bottom:24px;align-items:stretch}
+.hero-visual{position:relative;min-height:460px;border:1px solid var(--bord);border-radius:2px;overflow:hidden;background:linear-gradient(180deg,rgba(15,10,8,.12),rgba(15,10,8,.42)),linear-gradient(90deg,rgba(32,18,12,.36),rgba(32,18,12,.12) 42%,rgba(32,18,12,.34)),url("https://images.unsplash.com/photo-1759554203863-6bd8beab00ef?auto=format&fit=crop&w=1800&q=80") center/cover no-repeat;box-shadow:0 20px 60px rgba(0,0,0,.22)}
+.hero-visual::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 78% 16%,rgba(255,214,143,.22),transparent 24%),radial-gradient(circle at 18% 78%,rgba(139,26,42,.16),transparent 34%)}
+.hero-copy{position:absolute;left:0;right:0;bottom:0;padding:38px;z-index:1;max-width:680px}
+.hero-kicker{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid rgba(232,201,110,.42);background:rgba(255,248,249,.08);backdrop-filter:blur(8px);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:#fff3cf;margin-bottom:18px}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.6rem,5vw,4.8rem);line-height:.94;color:var(--wht);font-weight:300;text-shadow:0 12px 32px rgba(0,0,0,.28)}
+.hero-title em{color:#f3d27e;font-style:italic}
+.hero-sub{margin-top:16px;max-width:560px;font-size:1rem;line-height:1.8;color:#fff3f0;text-shadow:0 4px 18px rgba(0,0,0,.22)}
+.hero-panel h3,.auth-title{font-family:'Cormorant Garamond',serif;font-size:1.45rem;color:var(--wht);font-style:italic;font-weight:300}
+.hero-panel p,.auth-sub{margin-top:8px;font-size:.78rem;line-height:1.8;color:#dacbce}
+body.logged-in .hero-landing,body.logged-in .auth-card{display:none}
+body:not(.logged-in) .tabs{display:none}
+body:not(.logged-in) .cloud-mini-actions{display:none !important}
+body:not(.logged-in) .stats{opacity:.55}
+body.logged-in .cloud-card{display:none}
+.dash-grid,#panel-ozet,#tab-ozet-btn{display:none !important}
 
 .hero-landing{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;margin-bottom:24px}
 .hero-visual{position:relative;min-height:420px;border:1px solid var(--bord);border-radius:2px;overflow:hidden;background:
@@ -284,13 +305,12 @@ body.logged-in .cloud-card{display:none}
         <div class="stat"><div class="stn" id="st-a">—</div><div class="stl">Ort.</div></div>
         <div class="stat"><div class="stn" id="st-b">—</div><div class="stl">En İyi</div></div>
       </div>
-      <div class="cloud-userline">
-        <span class="cloud-badge" id="cloud-mode-badge">Yerel</span>
-        <span class="cloud-badge" id="cloud-auth-badge">Çıkış yapıldı</span>
-        <span class="cloud-usertext" id="cloud-status-header">Yerel mod · sadece bu cihazda kayıtlı</span>
+      <div class="account-line">
+        <span class="account-pill" id="account-state-pill">Hesap</span>
+        <span class="account-text" id="cloud-status-header">Giriş yaparak kişisel arşivini aç.</span>
       </div>
       <div class="cloud-mini-actions" id="post-login-actions-mini" style="display:none">
-        <button class="fbtn secondary-sync" id="sync-btn-mini" type="button">Manuel Eşitle</button>
+        <button class="fbtn secondary-sync" id="sync-btn-mini" type="button">Yenile</button>
         <button class="fbtn" id="logout-btn-mini" type="button">Çıkış Yap</button>
       </div>
     </div>
@@ -300,9 +320,9 @@ body.logged-in .cloud-card{display:none}
 <section class="hero-landing">
   <div class="hero-visual">
     <div class="hero-copy">
-      <div class="hero-kicker">Private Cellar Experience</div>
-      <div class="hero-title">Şarap notlarını <em>premium</em> bir mahzene taşı.</div>
-      <div class="hero-sub">Koleksiyonunu estetik bir arşivde tut, şişeleri puanla, nereden aldığını unutma ve her tadımı aynı kalitede kaydet. Bu artık basit bir liste değil; kişisel şarap hafızan.</div>
+      <div class="hero-kicker">Toscana’da Bir Akşam</div>
+      <div class="hero-title">Beğendiğin her şarabı <em>sakin, şık ve düzenli</em> bir yerde tut.</div>
+      <div class="hero-sub">İçtiklerini unutma, sevdiğin şişeleri tekrar bul ve kendi damak zevkini zaman içinde netleştir. Şarap Defterim, kişisel tadım notlarını düzenli tutman için tasarlandı.</div>
       <div class="hero-actions">
         <button class="hero-btn" id="hero-signup-btn" type="button">Üye Ol</button>
         <button class="hero-btn alt" id="hero-login-btn" type="button">Giriş Yap</button>
@@ -311,18 +331,18 @@ body.logged-in .cloud-card{display:none}
   </div>
   <div class="hero-side">
     <div class="hero-panel">
-      <h3>Premium his veren bir tadım günlüğü</h3>
-      <p>Şişe, bağ, ülke, puan, fiyat ve eşleşme notlarını tek yerde sakla. Her kayıt daha sonra dönüp gerçekten kullanacağın kadar düzenli olsun.</p>
+      <h3>Kendi şarap arşivin, sade ve doğal bir deneyimle</h3>
+      <p>İster evde açtığın bir şişe olsun, ister bir restoranda içtiğin özel bir seçim. Hepsini aynı yerde tut, not düş ve sonra kolayca geri dön.</p>
       <div class="premium-list">
-        <div class="premium-item"><span>Cinematic Landing</span><strong>Toskana hissi</strong></div>
-        <div class="premium-item"><span>Private Cloud Sync</span><strong>Her cihazda aynı arşiv</strong></div>
-        <div class="premium-item"><span>Fast Tasting Flow</span><strong>Hızlı kayıt, temiz detay</strong></div>
+        <div class="premium-item"><span>Tadım geçmişin</span><strong>tek yerde toplansın</strong></div>
+        <div class="premium-item"><span>aynı hesapla</span><strong>aynı arşive dön</strong></div>
+        <div class="premium-item"><span>hızlı kayıt</span><strong>az efor, net sonuç</strong></div>
       </div>
     </div>
 
-    <div class="auth-card cloud-card">
-      <div class="auth-title">Giriş yap veya yeni üye ol</div>
-      <div class="auth-sub">Yeni hesap açtıktan sonra aynı bilgilerle giriş yapıp kendi koleksiyonunu oluşturmaya başlayabilirsin.</div>
+    <div class="auth-card">
+      <div class="auth-title">Hesabına gir veya yeni hesap oluştur</div>
+      <div class="auth-sub">Kayıt olduktan sonra koleksiyonun yalnızca sana açık kalır. Giriş yaptığında şişelerini, notlarını ve puanlarını kaldığın yerden görürsün.</div>
       <div class="cloud-grid" id="cloud-login-grid">
         <div class="fg">
           <div class="lbl">E-posta</div>
@@ -337,9 +357,9 @@ body.logged-in .cloud-card{display:none}
         <button class="save-btn" id="login-btn" type="button" style="margin-top:0">Giriş Yap</button>
         <button class="fbtn" id="signup-btn" type="button">Üye Ol</button>
       </div>
-      <div class="auth-hint">Supabase tarafında e-posta doğrulaması açıksa, üyelikten sonra mail kutunu da kontrol et.</div>
+      <div class="auth-hint">Kayıttan sonra gerekirse e-postandaki doğrulama bağlantısını açman yeterli.</div>
       <div class="cloud-actions" id="post-login-actions">
-        <button class="fbtn secondary-sync" id="sync-btn" type="button">Manuel Eşitle</button>
+        <button class="fbtn secondary-sync" id="sync-btn" type="button">Yenile</button>
         <button class="fbtn" id="logout-btn" type="button">Çıkış Yap</button>
       </div>
     </div>
@@ -347,8 +367,8 @@ body.logged-in .cloud-card{display:none}
 </section>
 
 <div class="tabs">
-  <button class="tbtn on" id="tab-ekle-btn">＋ Yeni Değerlendirme</button>
-  <button class="tbtn" id="tab-kol-btn">Koleksiyonum</button>
+  <button class="tbtn on" id="tab-kol-btn">Koleksiyonum</button>
+  <button class="tbtn" id="tab-ekle-btn">＋ Yeni Şarap</button>
 </div>
 
 <div class="panel on" id="panel-ekle">
@@ -422,7 +442,7 @@ body.logged-in .cloud-card{display:none}
   </div>
 </div>
 
-<div class="panel" id="panel-kol">
+<div class="panel on" id="panel-kol">
   <div class="toolbar">
     <button class="fbtn on" data-filter="Tümü" type="button">Tümü</button>
     <button class="fbtn" data-filter="🍷 Kırmızı" type="button">🍷 Kırmızı</button>
@@ -604,7 +624,7 @@ function clearImg() {
 function requireAuth() {
   if (!isCloudReady()) {
     showToast('Önce giriş yap', '');
-    switchTab('ozet');
+  
     return false;
   }
   return true;
@@ -927,12 +947,7 @@ function populateFormForEdit(id) {
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
-function renderDashboard() { return; }
-
-document.getElementById('mclose').addEventListener('click', closeModal);
-document.getElementById('overlay').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
+function renderDashboard() { return; });
 window.addEventListener('popstate', closeModal);
 
 function updateStats() {
@@ -1026,34 +1041,30 @@ function isCloudReady() {
 
 function updateCloudUi(msg) {
   var status = document.getElementById('cloud-status-header');
-  var modeBadge = document.getElementById('cloud-mode-badge');
-  var authBadge = document.getElementById('cloud-auth-badge');
+  var accountPill = document.getElementById('account-state-pill');
   var miniActions = document.getElementById('post-login-actions-mini');
 
   if (isCloudReady()) {
     document.body.classList.add('logged-in');
     status.textContent = msg || currentUser.email;
-    modeBadge.textContent = 'Bulut';
-    authBadge.textContent = 'Giriş yapıldı';
+    if (accountPill) accountPill.textContent = 'Hesap';
     if (miniActions) miniActions.style.display = 'flex';
   } else if (sb) {
     document.body.classList.remove('logged-in');
-    status.textContent = msg || 'Çıkış yapıldı';
-    modeBadge.textContent = 'Bulut';
-    authBadge.textContent = 'Çıkış yapıldı';
+    status.textContent = msg || 'Giriş yaparak kişisel arşivini aç.';
+    if (accountPill) accountPill.textContent = 'Hesap';
     if (miniActions) miniActions.style.display = 'none';
   } else {
     document.body.classList.remove('logged-in');
-    status.textContent = msg || 'Yerel mod · sadece bu cihazda kayıtlı';
-    modeBadge.textContent = 'Yerel';
-    authBadge.textContent = 'Çıkış yapıldı';
+    status.textContent = msg || 'Giriş yaparak kişisel arşivini aç.';
+    if (accountPill) accountPill.textContent = 'Hesap';
     if (miniActions) miniActions.style.display = 'none';
   }
 }
 
 async function hydrateSession() {
   if (!sb) {
-    updateCloudUi('Bulut ayarları koda gömülü değil');
+    updateCloudUi('Uygulama ayarları eksik');
     clearLocalWineState();
     return;
   }
@@ -1135,11 +1146,11 @@ async function saveWineToCloud(wine) {
   var result = await upsertWinePayload(payload);
   if (result.error) {
     console.error(result.error);
-    updateCloudUi('Bulut bağlı · son kayıt yüklenemedi');
-    showToast('Buluta kayıt giderken hata oldu: ' + (result.error.message || 'bilinmeyen hata'), '');
+    updateCloudUi('Kayıt eşitlenemedi');
+    showToast('Kayıt gönderilemedi: ' + (result.error.message || 'bilinmeyen hata'), '');
     return;
   }
-  updateCloudUi('Bulut bağlı · kayıt eşitlendi');
+  updateCloudUi('Kayıt güncellendi');
 }
 
 async function deleteWineFromCloud(appId) {
@@ -1147,7 +1158,7 @@ async function deleteWineFromCloud(appId) {
   var result = await sb.from('wines').delete().eq('app_id', String(appId)).eq('user_id', currentUser.id);
   if (result.error) {
     console.error(result.error);
-    showToast('Buluttan silme başarısız', '');
+    showToast('Silme işlemi tamamlanamadı', '');
   }
 }
 
@@ -1156,7 +1167,7 @@ async function loadCloudWines() {
   var result = await sb.from('wines').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
   if (result.error) {
     console.error(result.error);
-    showToast('Buluttaki kayıtlar alınamadı', '');
+    showToast('Kayıtlar alınamadı', '');
     return;
   }
   var localMap = {};
@@ -1190,7 +1201,7 @@ async function loadCloudWines() {
   renderWines();
   updateStats();
   renderDashboard();
-  updateCloudUi('Bulut bağlı · kayıtlar yüklendi');
+  updateCloudUi('Kayıtlar güncellendi');
 }
 
 async function autoRefreshFromCloud() {
@@ -1211,16 +1222,16 @@ async function syncAllToCloud(showOkToast) {
   var result = await bulkUpsertWinePayloads(payload);
   if (result.error) {
     console.error(result.error);
-    showToast('Toplu senkronizasyon başarısız: ' + (result.error && result.error.message ? result.error.message : 'bilinmeyen hata'), '');
+    showToast('Toplu güncelleme başarısız: ' + (result.error && result.error.message ? result.error.message : 'bilinmeyen hata'), '');
     return;
   }
-  updateCloudUi('Bulut bağlı · tüm kayıtlar eşitlendi');
-  if (showOkToast !== false) showToast('Tüm kayıtlar buluta gitti', 'ok');
+  updateCloudUi('Tüm kayıtlar güncellendi');
+  if (showOkToast !== false) showToast('Tüm kayıtlar güncellendi', 'ok');
 }
 
 async function loginToCloud() {
   if (!sb && !initSupabaseClient()) {
-    showToast('Supabase bilgileri koda sabitlenmemiş', '');
+    showToast('Uygulama ayarları eksik', '');
     return;
   }
   var email = document.getElementById('auth-email').value.trim();
@@ -1238,7 +1249,7 @@ async function loginToCloud() {
   }
   currentUser = result.data.user;
   loadPersistedWines();
-  updateCloudUi('Bulut bağlı · giriş yapıldı');
+  updateCloudUi('Giriş yapıldı');
   await syncAllToCloud(false);
   await loadCloudWines();
   switchTab('kol');
@@ -1247,7 +1258,7 @@ async function loginToCloud() {
 
 async function signUpToCloud() {
   if (!sb && !initSupabaseClient()) {
-    showToast('Supabase bağlantısı hazır değil', '');
+    showToast('Bağlantı şu anda hazır değil', '');
     return;
   }
   var email = document.getElementById('auth-email').value.trim();
