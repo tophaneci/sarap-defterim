@@ -527,6 +527,51 @@ var sbConfig = {
   key: HARDCODED_SUPABASE_ANON_KEY
 };
 var sb = null;
+  // Supabase init
+sb = supabase.createClient(sbConfig.url, sbConfig.key);
+
+// mevcut session kontrol
+(async () => {
+  const { data } = await sb.auth.getSession();
+  if (data.session) {
+    currentUser = data.session.user;
+    document.body.classList.add('logged-in');
+  }
+})();
+  document.getElementById('login-btn').addEventListener('click', async function () {
+  const email = document.getElementById('auth-email').value;
+  const password = document.getElementById('auth-password').value;
+
+  const { error } = await sb.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    showToast('Login hatası: ' + error.message);
+  } else {
+    location.reload();
+  }
+});
+  document.getElementById('signup-btn').addEventListener('click', async function () {
+  const email = document.getElementById('auth-email').value;
+  const password = document.getElementById('auth-password').value;
+
+  const { error } = await sb.auth.signUp({
+    email,
+    password
+  });
+
+  if (error) {
+    showToast('Kayıt hatası: ' + error.message);
+  } else {
+    showToast('Kayıt başarılı. Mailini kontrol et.');
+  }
+});
+  document.getElementById('logout-btn').addEventListener('click', async function () {
+  await sb.auth.signOut();
+  location.reload();
+});
 var currentUser = null;
 
 var catDefs = [
