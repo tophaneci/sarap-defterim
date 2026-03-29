@@ -38,7 +38,15 @@ header{padding:28px 0 20px;border-bottom:1px solid var(--bord);margin-bottom:28p
 .fg{display:flex;flex-direction:column;gap:5px}
 .fg.w2{grid-column:1/-1}
 .lbl{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--mut)}
-input[type=text],input[type=number],select,textarea{background:var(--bg);border:1px solid var(--bord);color:var(--txt);font-family:'Josefin Sans',sans-serif;font-size:.88rem;padding:9px 12px;border-radius:1px;outline:none;transition:border-color .2s;width:100%;-webkit-appearance:none;appearance:none}
+input[type=text],
+input[type=password],
+input[type=number],
+select,
+textarea{
+  background:var(--bg);border:1px solid var(--bord);color:var(--txt);font-family:'Josefin Sans',sans-serif;
+  font-size:.88rem;padding:9px 12px;border-radius:1px;outline:none;transition:border-color .2s;width:100%;
+  -webkit-appearance:none;appearance:none
+}
 input:focus,select:focus,textarea:focus{border-color:var(--wineh)}
 select option{background:#1a0c10}
 textarea{resize:vertical;min-height:80px;line-height:1.6}
@@ -149,7 +157,6 @@ textarea{resize:vertical;min-height:80px;line-height:1.6}
 .m-sec-val{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--txt);line-height:1.65;font-style:italic}
 .m-del{background:none;border:1px solid var(--bord);color:var(--mut);font-family:'Josefin Sans',sans-serif;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;padding:9px;cursor:pointer;border-radius:1px;width:100%;margin-top:6px;transition:all .2s;-webkit-tap-highlight-color:transparent}
 .m-del:active{border-color:var(--wineh);color:var(--wineh)}
-
 .secondary-sync{opacity:.75}
 .secondary-sync:hover{opacity:1}
 input:-webkit-autofill,
@@ -161,7 +168,11 @@ input:-webkit-autofill:active{
   box-shadow: 0 0 0 1000px var(--bg) inset;
   transition: background-color 9999s ease-in-out 0s;
 }
-
+input:-moz-autofill{
+  box-shadow: 0 0 0 1000px var(--bg) inset !important;
+  -moz-text-fill-color: var(--txt) !important;
+  border:1px solid var(--bord) !important;
+}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--surf2);border:1px solid var(--wineh);color:var(--wht);font-size:.72rem;letter-spacing:.1em;padding:10px 20px;border-radius:2px;z-index:999;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.ok{border-color:var(--greenl);background:#0d2419}
@@ -204,10 +215,11 @@ body.logged-in .cloud-card{display:none}
 body.logged-in #cloud-login-grid, body.logged-in #login-actions, body.logged-in #cloud-note-auth{display:none}
 body:not(.logged-in) #post-login-actions{display:none}
 body.logged-in #cloud-settings-wrap{display:none}
+body:not(.logged-in) #tab-ekle-btn,
+body:not(.logged-in) #tab-kol-btn{display:none}
 
 @media(max-width:580px){
   .cloud-grid,.dash-grid{grid-template-columns:1fr}
-
   .fg2{grid-template-columns:1fr}
   .fg.w2,.star-section,.score-box{grid-column:1}
   .stats{gap:14px}.stn{font-size:1.5rem}
@@ -224,11 +236,9 @@ body.logged-in #cloud-settings-wrap{display:none}
 <meta name="theme-color" content="#8b1a2a">
 <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 </head>
 <body>
 <div class="wrap">
-
 <header>
   <div class="hdr">
     <div class="logo">
@@ -247,7 +257,7 @@ body.logged-in #cloud-settings-wrap{display:none}
         <span class="cloud-usertext" id="cloud-status-header">Yerel mod · sadece bu cihazda kayıtlı</span>
       </div>
       <div class="cloud-mini-actions" id="post-login-actions-mini" style="display:none">
-        <button class="fbtn" id="sync-btn-mini" type="button" class="fbtn secondary-sync">Manuel Eşitle</button>
+        <button class="fbtn secondary-sync" id="sync-btn-mini" type="button">Manuel Eşitle</button>
         <button class="fbtn" id="logout-btn-mini" type="button">Çıkış Yap</button>
       </div>
     </div>
@@ -260,24 +270,17 @@ body.logged-in #cloud-settings-wrap{display:none}
   <button class="tbtn" id="tab-kol-btn">Koleksiyonum</button>
 </div>
 
-
 <div class="cloud-card">
-  <div class="cloud-head">
-    <div>
-    </div>
-  </div>
-
   <div class="cloud-grid" style="margin-top:14px" id="cloud-login-grid">
     <div class="fg">
       <div class="lbl">E-posta</div>
-      <input type="text" id="auth-email" placeholder="sen@eposta.com">
+      <input type="text" id="auth-email" placeholder="sen@eposta.com" autocomplete="username email">
     </div>
     <div class="fg">
       <div class="lbl">Şifre</div>
-      <input type="password" id="auth-password" placeholder="Supabase Auth şifren">
+      <input type="password" id="auth-password" placeholder="Supabase Auth şifren" autocomplete="current-password">
     </div>
   </div>
-
   <div class="cloud-actions" id="login-actions">
     <button class="save-btn" id="login-btn" type="button" style="margin-top:0">Giriş Yap</button>
   </div>
@@ -286,7 +289,6 @@ body.logged-in #cloud-settings-wrap{display:none}
     <button class="fbtn" id="logout-btn" type="button">Çıkış Yap</button>
   </div>
 </div>
-
 
 <div class="panel on" id="panel-ozet">
   <div class="dash-grid">
@@ -405,10 +407,8 @@ body.logged-in #cloud-settings-wrap{display:none}
   </div>
   <div id="coll"></div>
 </div>
-
 </div>
 
-<!-- MODAL -->
 <div class="overlay" id="overlay">
   <div class="modal" id="modal">
     <button class="mclose" id="mclose" type="button">✕</button>
@@ -449,7 +449,7 @@ body.logged-in #cloud-settings-wrap{display:none}
 <div class="toast" id="toast"></div>
 
 <script>
-var wines = JSON.parse(localStorage.getItem('sd4') || '[]');
+var wines = [];
 var ratings = {gorunum:0,koku:0,tat:0,denge:0};
 var curImg = null;
 var curFilter = 'Tümü';
@@ -477,7 +477,6 @@ var catDefs = [
   {k:'denge',l:'Denge'}
 ];
 
-// Build star rows
 catDefs.forEach(function(c) {
   var row = document.createElement('div');
   row.className = 'star-row';
@@ -528,7 +527,6 @@ function recalcScore() {
   return score;
 }
 
-// Image
 document.getElementById('f-img').addEventListener('change', function() {
   if (this.files && this.files[0]) readImg(this.files[0]);
 });
@@ -564,17 +562,29 @@ function clearImg() {
   document.getElementById('f-img').value = '';
 }
 
-// Save
-document.getElementById('save-btn').addEventListener('click', function() {
+function requireAuth() {
+  if (!isCloudReady()) {
+    showToast('Önce giriş yap', '');
+    switchTab('ozet');
+    return false;
+  }
+  return true;
+}
+
+document.getElementById('save-btn').addEventListener('click', async function() {
+  if (!requireAuth()) return;
+
   var name = document.getElementById('f-name').value.trim();
   if (!name) { showToast('⚠ Şarap adı zorunlu!', ''); return; }
 
   var ratCopy = {};
   for (var k in ratings) ratCopy[k] = ratings[k];
 
-  var wine = {
-    id: editingWineId || Date.now(),
-    app_id: editingWineId || Date.now(),
+  var baseId = editingWineId || String(Date.now());
+
+  var wine = normalizeWine({
+    id: baseId,
+    app_id: baseId,
     name: name,
     producer: document.getElementById('f-producer').value.trim(),
     country: document.getElementById('f-country').value,
@@ -589,18 +599,19 @@ document.getElementById('save-btn').addEventListener('click', function() {
     score: recalcScore(),
     image: curImg,
     date: new Date().toLocaleDateString('tr-TR')
-  };
+  });
 
   if (editingWineId) {
     wines = wines.map(function(item) {
-      return String(item.app_id || item.id) === String(editingWineId) ? normalizeWine(wine) : normalizeWine(item);
+      return String(item.app_id || item.id) === String(editingWineId) ? wine : normalizeWine(item);
     });
   } else {
-    wines.unshift(normalizeWine(wine));
+    wines.unshift(wine);
   }
 
   persist();
-  if (isCloudReady()) saveWineToCloud(wine);
+  await saveWineToCloud(wine);
+
   var savedName = wine.name;
   var wasEdit = !!editingWineId;
   resetForm();
@@ -650,7 +661,6 @@ function resetForm() {
   clearImg();
 }
 
-// Tabs
 function switchTab(tab) {
   var map = {
     ozet: {panel:'panel-ozet', btn:'tab-ozet-btn'},
@@ -672,14 +682,15 @@ document.getElementById('tab-ozet-btn').addEventListener('click', function(){ sw
 document.getElementById('tab-ekle-btn').addEventListener('click', function(){ switchTab('ekle'); });
 document.getElementById('tab-kol-btn').addEventListener('click', function(){ switchTab('kol'); });
 
-// Filter/sort/search/view
 document.querySelectorAll('.fbtn').forEach(function(btn) {
-  btn.addEventListener('click', function() {
-    document.querySelectorAll('.fbtn').forEach(function(b) { b.classList.remove('on'); });
-    this.classList.add('on');
-    curFilter = this.dataset.filter;
-    renderWines();
-  });
+  if (btn.dataset.filter) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.fbtn[data-filter]').forEach(function(b) { b.classList.remove('on'); });
+      this.classList.add('on');
+      curFilter = this.dataset.filter;
+      renderWines();
+    });
+  }
 });
 document.getElementById('srt').addEventListener('change', function() { curSort = this.value; renderWines(); });
 document.getElementById('srch').addEventListener('input', function() { curSearch = this.value; renderWines(); });
@@ -766,7 +777,6 @@ function renderWines() {
   }
   coll.innerHTML = html;
 
-  // Single delegated listener
   coll.onclick = function(e) {
     var delEl = e.target.closest('[data-del]');
     if (delEl) {
@@ -786,10 +796,11 @@ function renderWines() {
   };
 }
 
-function doDelete(id) {
+async function doDelete(id) {
+  if (!requireAuth()) return;
   wines = wines.filter(function(w) { return String(w.app_id || w.id) !== String(id); });
   persist(); renderWines(); updateStats(); renderDashboard();
-  if (isCloudReady()) deleteWineFromCloud(id);
+  if (isCloudReady()) await deleteWineFromCloud(id);
   showToast('Silindi', 'ok');
 }
 
@@ -836,12 +847,9 @@ function openModal(id) {
     closeModal();
   };
 
-  document.getElementById('m-del').onclick = function() {
+  document.getElementById('m-del').onclick = async function() {
     closeModal();
-    wines = wines.filter(function(x) { return String(x.id) !== String(id); });
-    persist(); renderWines(); updateStats(); renderDashboard();
-    if (isCloudReady()) deleteWineFromCloud(id);
-    showToast('Silindi', 'ok');
+    await doDelete(id);
   };
 
   document.getElementById('overlay').classList.add('on');
@@ -854,6 +862,7 @@ function closeModal() {
 }
 
 function populateFormForEdit(id) {
+  if (!requireAuth()) return;
   var w = wines.find(function(x) { return String(x.app_id || x.id) === String(id); });
   if (!w) return;
   editingWineId = String(w.app_id || w.id);
@@ -950,7 +959,6 @@ function showToast(msg, type) {
   toastTimer = setTimeout(function() { t.className = 'toast'; }, 2400);
 }
 
-
 function normalizeWine(w) {
   var id = w.id || w.app_id || Date.now();
   return {
@@ -978,6 +986,24 @@ function persist() {
   localStorage.setItem('sd4', JSON.stringify(wines.map(function(w){ return normalizeWine(w); })));
 }
 
+function loadPersistedWines() {
+  try {
+    wines = JSON.parse(localStorage.getItem('sd4') || '[]').map(normalizeWine);
+  } catch (e) {
+    wines = [];
+  }
+}
+
+function clearLocalWineState() {
+  wines = [];
+  localStorage.removeItem('sd4');
+  renderWines();
+  updateStats();
+  renderDashboard();
+  closeModal();
+  resetForm();
+}
+
 function initSupabaseClient() {
   if (!sbConfig.url || !sbConfig.key || !window.supabase || !window.supabase.createClient) {
     sb = null;
@@ -1000,27 +1026,25 @@ function isCloudReady() {
 
 function updateCloudUi(msg) {
   var status = document.getElementById('cloud-status-header');
-  var statusMain = document.getElementById('cloud-status-main');
   var modeBadge = document.getElementById('cloud-mode-badge');
   var authBadge = document.getElementById('cloud-auth-badge');
   var miniActions = document.getElementById('post-login-actions-mini');
 
   if (isCloudReady()) {
     document.body.classList.add('logged-in');
-    var settingsWrap = document.getElementById('cloud-settings-wrap'); if (settingsWrap) settingsWrap.open = false;
     status.textContent = msg || currentUser.email;
-    if (statusMain) statusMain.textContent = msg || currentUser.email;
     modeBadge.textContent = 'Bulut';
     authBadge.textContent = 'Giriş yapıldı';
     if (miniActions) miniActions.style.display = 'flex';
   } else if (sb) {
     document.body.classList.remove('logged-in');
+    status.textContent = msg || 'Çıkış yapıldı';
+    modeBadge.textContent = 'Bulut';
     authBadge.textContent = 'Çıkış yapıldı';
     if (miniActions) miniActions.style.display = 'none';
   } else {
     document.body.classList.remove('logged-in');
     status.textContent = msg || 'Yerel mod · sadece bu cihazda kayıtlı';
-    if (statusMain) statusMain.textContent = msg || 'Yerel mod · sadece bu cihazda kayıtlı';
     modeBadge.textContent = 'Yerel';
     authBadge.textContent = 'Çıkış yapıldı';
     if (miniActions) miniActions.style.display = 'none';
@@ -1028,13 +1052,26 @@ function updateCloudUi(msg) {
 }
 
 async function hydrateSession() {
-  if (!sb) { updateCloudUi('Bulut ayarları koda gömülü değil'); return; }
+  if (!sb) {
+    updateCloudUi('Bulut ayarları koda gömülü değil');
+    clearLocalWineState();
+    return;
+  }
+
   var result = await sb.auth.getSession();
   currentUser = result && result.data && result.data.session ? result.data.session.user : null;
-  updateCloudUi();
+
   if (currentUser) {
+    loadPersistedWines();
+    updateCloudUi();
+    renderWines();
+    updateStats();
+    renderDashboard();
     await loadCloudWines();
     await syncAllToCloud(false);
+  } else {
+    clearLocalWineState();
+    updateCloudUi('Çıkış yapıldı');
   }
 }
 
@@ -1156,7 +1193,6 @@ async function loadCloudWines() {
   updateCloudUi('Bulut bağlı · kayıtlar yüklendi');
 }
 
-
 async function autoRefreshFromCloud() {
   if (!isCloudReady()) return;
   await loadCloudWines();
@@ -1164,7 +1200,7 @@ async function autoRefreshFromCloud() {
 
 async function syncAllToCloud(showOkToast) {
   if (!isCloudReady()) {
-    showToast('Önce giriş yap', '');
+    if (showOkToast !== false) showToast('Önce giriş yap', '');
     return;
   }
   if (!wines.length) {
@@ -1201,22 +1237,27 @@ async function loginToCloud() {
     return;
   }
   currentUser = result.data.user;
+  loadPersistedWines();
   updateCloudUi('Bulut bağlı · giriş yapıldı');
   await syncAllToCloud(false);
   await loadCloudWines();
-  showToast('Giriş Yaptın', 'ok');
+  switchTab('ozet');
+  showToast('Giriş yaptın', 'ok');
 }
 
 async function logoutFromCloud() {
-  if (!sb) return;
-  var result = await sb.auth.signOut({ scope: 'local' });
-  if (result && result.error) {
-    console.error(result.error);
+  if (sb) {
+    var result = await sb.auth.signOut({ scope: 'local' });
+    if (result && result.error) {
+      console.error(result.error);
+    }
   }
   currentUser = null;
-  updateCloudUi('Yerel mod · çıkış yapıldı');
+  document.getElementById('auth-password').value = '';
+  clearLocalWineState();
+  switchTab('ozet');
+  updateCloudUi('Çıkış yapıldı');
   showToast('Çıkış yapıldı', 'ok');
-  setTimeout(function(){ window.location.reload(); }, 250);
 }
 
 document.getElementById('login-btn').addEventListener('click', loginToCloud);
@@ -1239,6 +1280,9 @@ if (sb && sb.auth && sb.auth.onAuthStateChange) {
     updateCloudUi();
     if (currentUser) {
       loadCloudWines();
+    } else {
+      clearLocalWineState();
+      switchTab('ozet');
     }
   });
 }
@@ -1254,7 +1298,6 @@ hydrateSession();
 updateStats();
 renderWines();
 renderDashboard();
-
 </script>
 </body>
 </html>
